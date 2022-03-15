@@ -1,0 +1,100 @@
+:root {
+    --blue: #1e90ff;
+    --columns_count: 18;
+}
+
+div.scroll-hor {
+    overflow-x: auto;
+}
+
+.mendeleev-table {
+    /*min-width: 500px;*/
+    padding: 3px;
+    padding-left: 0px;
+    padding-top: 0px;
+    margin-bottom: 0px;
+    list-style-type: none;
+    grid-template-columns: 1em repeat(var(--columns_count), 1fr);
+    display: grid;
+    gap: 5px;
+}
+
+.Valence {
+    font-size: 0.7em;
+    text-align: center;
+}
+
+.Group {
+    text-align: center;
+}
+
+.Period {
+    align-self: center;
+    text-align: center;
+}
+
+.Element {
+    padding: 3px;
+    background: #ffd900;
+    outline: 0px solid rgb(65 63 53);
+    line-height: 1;
+    font-size: max(600px * 0.025, 1vw);
+}
+
+.Element:hover {
+    outline-width: 3px;
+}
+
+.Element > * {
+    display: block;
+    font-style: normal;
+}
+
+.Element > b {
+    font-size: 0.65em;
+}
+
+.Element > abbr {
+    font-size: 0.9em;
+}
+
+.Element > em {
+    font-size: 0.55em;
+}
+
+.Element > data {
+    font-size: 0.55em;
+}
+
+.Element.Active {
+    outline: 3px solid #e03f23;
+}
+
+#found_chemicals {
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+.VerticalInner {
+    grid-column-start: 4;
+    grid-row: 8 / span 5;
+}
+
+.LeftBottomInner {
+    grid-column: 1 / span 3;
+    grid-row: 10 / span 3;
+}
+
+.BeforeLanthanidesInner {
+    font-size: 0.7em;
+    padding: 0.5em;
+    grid-column-end: span 15;
+}
+
+.Chemical {
+
+}
+
+.PropertyValuesContainer {
+
+}

@@ -1,0 +1,94 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model dynamic
+
+@{
+    bool propertyHasSyngGroups;
+    try
+    {
+        var x = Model.syngGroups;
+        propertyHasSyngGroups = true;
+    }
+    catch
+    {
+        propertyHasSyngGroups = false;
+    }
+}
+
+<div class="PropertyValuesContainer p-3">
+@if (propertyHasSyngGroups)
+{
+    <h2>Select singony:</h2>
+    <div class="accordion" id="accordionSyngony">
+        @foreach (dynamic syng in Model.syngGroups)
+        {
+            <div class="accordion-item">
+                <h2 class="accordion-header" id=@($"heading_syng_{syng.name}")>
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target=@($"#collapse_syng_{syng.name}") aria-expanded="true" aria-controls=@($"collapse_syng_{syng.name}")>
+                        @syng.name
+                    </button>
+                </h2>
+                <div id=@($"collapse_syng_{syng.name}") class="accordion-collapse collapse" aria-labelledby=@($"heading_syng_{syng.name}") data-bs-parent="#accordionSyngony">
+                    <div class="accordion-body">
+                        <div id=@($"container_syng_{syng.name}")>
+
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            @foreach (dynamic column in Model.columnNames)
+                                            {
+                                                <th>@column</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (dynamic row in syng.rows)
+                                        {
+                                            <tr>
+                                                @foreach (dynamic elem in row)
+                                                {
+                                                    <td>@Html.Raw(elem)</td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    @foreach (dynamic column in Model.columnNames)
+                    {
+                        <th>@column</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (dynamic row in Model.rows)
+                {
+                    <tr>
+                        @foreach (dynamic elem in row)
+                        {
+                            <td>@Html.Raw(elem)</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+</div>
