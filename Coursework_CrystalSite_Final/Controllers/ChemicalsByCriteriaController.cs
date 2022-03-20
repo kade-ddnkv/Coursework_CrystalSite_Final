@@ -84,7 +84,7 @@ namespace Coursework_CrystalSite_Final.Controllers
                                 .WhereBetween($"{prop.Key}.Температура, K", $"{prop.Value["температура левая"]}", $"{prop.Value["температура правая"]}")
                                 .WhereBetween($"{prop.Key}.Растворимость, г/100 г раствора", $"{prop.Value["растворимость левая"]}", $"{prop.Value["растворимость правая"]}")
                                 .Select($"{prop.Key}.Растворитель", $"{prop.Key}.Температура, K", $"{prop.Key}.Растворимость, г/100 г раствора");
-                                kataQuery.Where($"{prop.Key}.Растворитель", $"{prop.Value["растворитель"]}");
+                            kataQuery.Where($"{prop.Key}.Растворитель", $"{prop.Value["растворитель"]}");
                             break;
 
                         case "Температура Кюри":
@@ -98,18 +98,49 @@ namespace Coursework_CrystalSite_Final.Controllers
                                 .Where($"Сингонии соединений.Обозначение сингонии", $"{prop.Value["сингония"]}")
                                 .Select($"Сингонии соединений.Обозначение сингонии");
                             break;
+
+                        case "Тепловое расширение":
+                            joinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "расширение", 
+                                "Обозначение коэффициента", "Значение коэффициента");
+                            break;
+
+                        case "Теплопроводность":
+                            joinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "теплопроводность",
+                                "Обозначение коэффициента", "Значение коэффициента");
+                            break;
+
+                        case "Диэлектрическая проницаемость":
+                            joinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "проницаемость",
+                                "Обозначение коэффициента", "Значение коэффициента");
+                            break;
+
+                        case "Тангенс угла диэлектрических потерь":
+                            joinOneRangeCriteria(kataQuery, prop, "Значение тангенса угла", "тангенс",
+                                "Обозначение тангенса угла потерь", "Значение тангенса угла");
+                            break;
                     }
                 }
                 var chemicalsOnlyQuery = kataQuery.Clone();
                 chemicalsOnlyQuery.Clauses.RemoveAll(clause => clause.Component == "select");
                 chemicalsOnlyQuery.Select($"Соединения.Соединение as HeadClue");
-                return View("QueryResult", 
-                    new QueryResultModel(chemicalsOnlyQuery.Get().Select(x => x.HeadClue), 
+                return View("QueryResult",
+                    new QueryResultModel(chemicalsOnlyQuery.Get().Select(x => x.HeadClue),
                     new DynamicTableModel(kataQuery.Get())));
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        private void joinOneRangeCriteria(Query kataQuery, KeyValuePair<string, Dictionary<string, string>> prop,
+            string columnBetweenName, string rangeName, params string[] columnSelects)
+        {
+            kataQuery.Join($"{prop.Key}", $"Соединения.Номер соединения", $"{prop.Key}.Номер соединения")
+                .WhereBetween($"{prop.Key}.{columnBetweenName}", $"{prop.Value[$"{rangeName} левая"]}", $"{prop.Value[$"{rangeName} правая"]}");
+            foreach (string columnName in columnSelects)
+            {
+                kataQuery.Select($"{prop.Key}.{columnName}");
             }
         }
     }

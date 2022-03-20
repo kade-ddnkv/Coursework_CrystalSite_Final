@@ -352,6 +352,30 @@
             </div>
         </div>
     </div>
+    @await Html.PartialAsync("_oneRangeCriteriaPartialView", new _oneRangeCriteriaModel() {
+    CurrentPropertyName = "Тепловое расширение",
+    RangeLabel = "α,10<sup>-6</sup>K<sup>-1</sup> :",
+    RangeSymbol = "α",
+    RangeValue = "расширение"
+    })
+    @await Html.PartialAsync("_oneRangeCriteriaPartialView", new _oneRangeCriteriaModel() {
+    CurrentPropertyName = "Теплопроводность",
+    RangeLabel = "λ, Вт/м*град :",
+    RangeSymbol = "λ",
+    RangeValue = "теплопроводность"
+    })
+    @await Html.PartialAsync("_oneRangeCriteriaPartialView", new _oneRangeCriteriaModel() {
+    CurrentPropertyName = "Диэлектрическая проницаемость",
+    RangeLabel = "ε :",
+    RangeSymbol = "ε",
+    RangeValue = "проницаемость"
+    })
+    @await Html.PartialAsync("_oneRangeCriteriaPartialView", new _oneRangeCriteriaModel() {
+    CurrentPropertyName = "Тангенс угла диэлектрических потерь",
+    RangeLabel = "δ :",
+    RangeSymbol = "δ",
+    RangeValue = "тангенс"
+    })
     <button type="submit" class="btn btn-primary">Submit</button>
     <br />
     <button type="reset" class="btn btn-light">Reset</button>
