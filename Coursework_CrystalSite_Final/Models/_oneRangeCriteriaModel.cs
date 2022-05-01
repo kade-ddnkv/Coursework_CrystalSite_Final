@@ -2,7 +2,7 @@
 
 namespace Coursework_CrystalSite_Final.Models
 {
-    public class _oneRangeCriteriaModel
+    public class _OneRangeCriteriaModel
     {
         public string CurrentPropertyName { get; set; }
 
@@ -10,6 +10,6 @@ namespace Coursework_CrystalSite_Final.Models
 
         public string RangeSymbol { get; set; }
 
-        public string RangeValue { get; set; }
+        public string RangeName { get; set; }
     }
 }

@@ -6,26 +6,29 @@
 
 @section PageCss
 {
-<link rel="stylesheet" href="~/css/chemicals_by_criteria.css" asp-append-version="true" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
+<link rel="stylesheet" href="~/css/complex_query_result.css" asp-append-version="true" />
 }
 
 @section Scripts
 {
-<script src="~/js/chemicals_by_criteria.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
+<script src="~/js/complex_query_result.js"></script>
 }
 
 @model QueryResultModel
 
 <div class="pb-2">
     <h2>Краткий список веществ:</h2>
+    <p class="text-muted">Нажмите на элемент, чтобы отфильтровать таблицу</p>
 </div>
 <div class="row">
     <div class="col-md-10 col-lg-8">
         <ol class="BriefChemicalsList pb-3">
-            @foreach (object chemical in Model.briefChemicalList)
+            @foreach (ChemicalModel chemical in Model.briefChemicalsList)
             {
                 @*<div class="col BriefChemical"><span>@Html.Raw(chemical)</span></div>*@
-                <li class="BriefChemical"><span>@Html.Raw(chemical)</span></li>
+                <li class="BriefChemical"><span>@Html.Raw(chemical.HtmlName)</span></li>
             }
         </ol>
     </div>
@@ -33,6 +36,6 @@
 <div class="pb-2">
     <h2>Полная таблица совпадений в базе данных:</h2>
 </div>
-<div id="table_query_result">
+<div id="tableQueryResult">
     @await Html.PartialAsync("_DynamicTablePartialView", Model.dynamicTable)
 </div>

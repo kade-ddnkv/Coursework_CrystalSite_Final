@@ -3,20 +3,12 @@
     width: auto;
 }
 
-.BriefChemicalsList {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    /*list-style-type: persian;*/
-    list-style-type: none;
-    padding: 0px;
-    gap: 0.7em;
-}
-
-.BriefChemical {
-
-}
-
 .Active {
     /*outline: 5px thin red;*/
     /*font-weight: bold;*/
 }
+
+/*div[disabled] {
+    opacity: 0.6;
+    pointer-events: none;
+}*/

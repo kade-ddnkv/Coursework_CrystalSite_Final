@@ -1,3 +1,7 @@
+* {
+    border-radius: 0 !important;
+}
+
 :root {
     --blue: #1e90ff;
     --columns_count: 18;
@@ -8,7 +12,7 @@ div.scroll-hor {
 }
 
 .mendeleev-table {
-    /*min-width: 500px;*/
+    min-width: 600px;
     padding: 3px;
     padding-left: 0px;
     padding-top: 0px;
@@ -36,39 +40,44 @@ div.scroll-hor {
 .Element {
     padding: 3px;
     background: #ffd900;
-    outline: 0px solid rgb(65 63 53);
+    outline: 0px solid #af9494;
     line-height: 1;
-    font-size: max(600px * 0.025, 1vw);
+    font-size: max(600px * 0.017, 1.17vw);
 }
 
-.Element:hover {
-    outline-width: 3px;
-}
+    .Element:hover {
+        outline-width: 3px;
+    }
 
-.Element > * {
-    display: block;
-    font-style: normal;
-}
+    .Element.Active {
+        outline: 3px solid #343e3e;
+    }
 
-.Element > b {
-    font-size: 0.65em;
-}
+    .Element > div > div > * {
+        display: block;
+        font-style: normal;
+    }
 
-.Element > abbr {
-    font-size: 0.9em;
-}
+    .Element > div > div > b {
+        font-size: 0.65em;
+        font-weight: 400;
+    }
 
-.Element > em {
-    font-size: 0.55em;
-}
+    .Element > div > div > abbr {
+        font-size: 0.9em;
+        padding-bottom: 0.2em;
+        font-weight: 600;
+    }
 
-.Element > data {
-    font-size: 0.55em;
-}
+    .Element > div > div > em {
+        font-size: 0.55em;
+    }
 
-.Element.Active {
-    outline: 3px solid #e03f23;
-}
+    .Element > div > div > data {
+        font-size: 0.55em;
+        position: absolute;
+        align-self: end;
+    }
 
 #found_chemicals {
     overflow-y: auto;
@@ -92,9 +101,51 @@ div.scroll-hor {
 }
 
 .Chemical {
-
 }
 
 .PropertyValuesContainer {
+}
 
+.insivible-chart-link {
+    display: none;
+}
+
+.Alkali {
+    background: #FF6666;
+}
+
+.Alkaline {
+    background: #FFDEAD;
+}
+
+.Lanthanoid {
+    background: #FFBFFF;
+}
+
+.Actinoid {
+    background: #FF99CC;
+}
+
+.Transition {
+    background: #FFC0C0;
+}
+
+.Poor {
+    background: #CCCCCC;
+}
+
+.Metalloid {
+    background: #CCCC99;
+}
+
+.Nonmetal {
+    background: #A0FFA0;
+}
+
+.Noble {
+    background: #C0FFFF;
+}
+
+.Unknown {
+    background: #E6E6E6;
 }

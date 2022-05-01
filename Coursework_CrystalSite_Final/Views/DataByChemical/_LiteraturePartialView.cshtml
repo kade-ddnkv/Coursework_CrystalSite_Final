@@ -1,0 +1,32 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<BookModel>
+
+<div class="vstack gap-3">
+    @foreach (BookModel book in Model)
+    {
+        <div class="bg-light border">
+            @(book.BookNumber).
+            @if (book.Authors != null)
+            {
+                <b>@Html.Raw(book.Authors) </b>
+            }
+            @if (book.ArticleName != null)
+            {
+                <i>@Html.Raw(book.ArticleName). </i>
+            }
+            @if (book.BookNameAndPages != null)
+            {
+                <span>// @Html.Raw(book.BookNameAndPages). </span>
+            }
+            @if (book.DoiLink != null)
+            {
+                <span>DOI: <a href="https://dx.doi.org/@book.DoiLink" target="_blank">@book.DoiLink</a></span>
+            }
+        </div>
+    }
+</div>

@@ -6,8 +6,8 @@
 
 @model DynamicTableModel
 
-<div class="table-responsive">
-    <table class="table table-sm">
+<div class="table table-responsive p-1">
+    <table class="table table-sm sortable">
         <thead>
             <tr>
                 @foreach (string column in Model.columnNames)

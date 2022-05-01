@@ -1,0 +1,15 @@
+﻿* {
+    border-radius: 0!important;
+}
+
+.BriefChemicalsList {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /*list-style-type: persian;*/
+    list-style-type: none;
+    padding: 0px;
+    gap: 0.7em;
+}
+
+.BriefChemical {
+}

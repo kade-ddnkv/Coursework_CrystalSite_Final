@@ -3,664 +3,670 @@
 *@
 @{
     ViewData["Title"] = "Get data by chemical";
-    int element_index = 1;
+    int elementIndex = 1;
 }
 
 @section PageCss
 {
-    <link rel="stylesheet" href="~/css/data_by_chemical.css" asp-append-version="true" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
+<link rel="stylesheet" href="~/css/data_by_chemical.css" asp-append-version="true" />
 }
 
 @section Scripts
 {
-    <script src="~/js/data_by_chemical.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
+<script src="~/js/data_by_chemical.js"></script>
 }
 
 <div class="container px-0">
     <div class="row my-4">
         <div class="col-lg-9 px-1">
-            <div class="p-2 bg-light">
-                <div class="scroll-hor">
-                    <ol class="mendeleev-table">
-                        <li class="Valence"></li>
-                        <li class="Valence">I A</li>
-                        <li class="Valence">II A</li>
-                        <li class="Valence">III B</li>
-                        <li class="Valence">IV B</li>
-                        <li class="Valence">V B</li>
-                        <li class="Valence">VI B</li>
-                        <li class="Valence">VII B</li>
-                        <li class="Valence" style="grid-column: span 3;">VIII B</li>
-                        <li class="Valence">I B</li>
-                        <li class="Valence">II B</li>
-                        <li class="Valence">III A</li>
-                        <li class="Valence">IV A</li>
-                        <li class="Valence">V A</li>
-                        <li class="Valence">VI A</li>
-                        <li class="Valence">VII A</li>
-                        <li class="Valence">VIII A</li>
-                        <li class="Valence"></li>
-                        @for (int i = 1; i <= 18; i++)
-                        {
-                                    <li class="Group">@i</li>
+            @*<div class="ratio ratio-16x9">*@
+                <div class="p-2 bg-light">
+                    <div class="scroll-hor">
+                        <ol class="mendeleev-table">
+                            <li class="Valence"></li>
+                            <li class="Valence">I A</li>
+                            <li class="Valence">II A</li>
+                            <li class="Valence">III B</li>
+                            <li class="Valence">IV B</li>
+                            <li class="Valence">V B</li>
+                            <li class="Valence">VI B</li>
+                            <li class="Valence">VII B</li>
+                            <li class="Valence" style="grid-column: span 3;">VIII B</li>
+                            <li class="Valence">I B</li>
+                            <li class="Valence">II B</li>
+                            <li class="Valence">III A</li>
+                            <li class="Valence">IV A</li>
+                            <li class="Valence">V A</li>
+                            <li class="Valence">VI A</li>
+                            <li class="Valence">VII A</li>
+                            <li class="Valence">VIII A</li>
+                            <li class="Valence"></li>
+                            @for (int i = 1; i <= 18; i++)
+                            {
+                                <li class="Group">@i</li>
+                            }
+                            <li class="Period">1</li>
+                            <li class="Element Nonmetal" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>H</abbr>
+                                @*<em>Углерод</em>*@
+                                <data>1,008</data></div></div>
+                            </li>
+                            <li style="grid-column: 3 / 19;"></li>
+                            <li class="Element Noble" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>He</abbr>
+                                <data>4,0026</data></div></div>
+                            </li>
+                            <li class="Period">2</li>
+                            <li class="Element Alkali" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Li</abbr>
+                                <data>6,94</data></div></div>
+                            </li>
+                            <li class="Element Alkaline" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Be</abbr>
+                                <data>12,009</data></div></div>
+                            </li>
+                            <li style="grid-column: 4 / 14;"></li>
+                            <li class="Element Metalloid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>B</abbr>
+                                <data>10,81</data></div></div>
+                            </li>
+                            <li class="Element Nonmetal" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>C</abbr>
+                                <data>12,011</data></div></div>
+                            </li>
+                            <li class="Element Nonmetal" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>N</abbr>
+                                <data>14,007</data></div></div>
+                            </li>
+                            <li class="Element Nonmetal" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>O</abbr>
+                                <data>15,999</data></div></div>
+                            </li>
+                            <li class="Element Nonmetal" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>F</abbr>
+                                <data>18,998</data></div></div>
+                            </li>
+                            <li class="Element Noble" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ne</abbr>
+                                <data>20,180</data></div></div>
+                            </li>
+                            <li class="Period">3</li>
+                            <li class="Element Alkali" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Na</abbr>
+                                <data>22,990</data></div></div>
+                            </li>
+                            <li class="Element Alkaline" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Mg</abbr>
+                                <data>24,305</data></div></div>
+                            </li>
+                            <li style="grid-column: 4 / 14;"></li>
+                            <li class="Element Poor" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Al</abbr>
+                                <data>26,982</data></div></div>
+                            </li>
+                            <li class="Element Metalloid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Si</abbr>
+                                <data>28,085</data></div></div>
+                            </li>
+                            <li class="Element Nonmetal" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>P</abbr>
+                                <data>30,974</data></div></div>
+                            </li>
+                            <li class="Element Nonmetal" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>S</abbr>
+                                <data>32,06</data></div></div>
+                            </li>
+                            <li class="Element Nonmetal" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Cl</abbr>
+                                <data>35,45</data></div></div>
+                            </li>
+                            <li class="Element Noble" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ar</abbr>
+                                <data>39,948</data></div></div>
+                            </li>
+                            <li class="Period">4</li>
+                            <li class="Element Alkali" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>K</abbr>
+                                <data>39,098</data></div></div>
+                            </li>
+                            <li class="Element Alkaline" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ca</abbr>
+                                <data>40,078</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Sc</abbr>
+                                <data>44,956</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ti</abbr>
+                                <data>47,867</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>V</abbr>
+                                <data>50,942</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Cr</abbr>
+                                <data>51,996</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Mn</abbr>
+                                <data>54,938</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Fe</abbr>
+                                <data>55,845</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Co</abbr>
+                                <data>58,933</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ni</abbr>
+                                <data>58,693</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Cu</abbr>
+                                <data>63,546</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Zn</abbr>
+                                <data>65,38</data></div></div>
+                            </li>
+                            <li class="Element Poor" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ga</abbr>
+                                <data>69,723</data></div></div>
+                            </li>
+                            <li class="Element Metalloid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ge</abbr>
+                                <data>72,630</data></div></div>
+                            </li>
+                            <li class="Element Metalloid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>As</abbr>
+                                <data>74,922</data></div></div>
+                            </li>
+                            <li class="Element Nonmetal" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Se</abbr>
+                                <data>78,971</data></div></div>
+                            </li>
+                            <li class="Element Nonmetal" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Br</abbr>
+                                <data>79,904</data></div></div>
+                            </li>
+                            <li class="Element Noble" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Kr</abbr>
+                                <data>83,798</data></div></div>
+                            </li>
+                            <li class="Period">5</li>
+                            <li class="Element Alkali" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Rb</abbr>
+                                <data>85,468</data></div></div>
+                            </li>
+                            <li class="Element Alkaline" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Sr</abbr>
+                                <data>87,62</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Y</abbr>
+                                <data>88,906</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Zr</abbr>
+                                <data>91,224</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Nb</abbr>
+                                <data>92,906</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Mo</abbr>
+                                <data>95,95</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Tc</abbr>
+                                <data>(98)</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ru</abbr>
+                                <data>101,07</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Rh</abbr>
+                                <data>102,91</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Pd</abbr>
+                                <data>106,42</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ag</abbr>
+                                <data>107,87</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Cd</abbr>
+                                <data>112,41</data></div></div>
+                            </li>
+                            <li class="Element Poor" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>In</abbr>
+                                <data>114,82</data></div></div>
+                            </li>
+                            <li class="Element Poor" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Sn</abbr>
+                                <data>118,71</data></div></div>
+                            </li>
+                            <li class="Element Metalloid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Sb</abbr>
+                                <data>121,76</data></div></div>
+                            </li>
+                            <li class="Element Metalloid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Te</abbr>
+                                <data>127,60</data></div></div>
+                            </li>
+                            <li class="Element Nonmetal" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>I</abbr>
+                                <data>126,90</data></div></div>
+                            </li>
+                            <li class="Element Noble" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Xe</abbr>
+                                <data>131,29</data></div></div>
+                            </li>
+                            <li class="Period">6</li>
+                            <li class="Element Alkali" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Cs</abbr>
+                                <data>132,91</data></div></div>
+                            </li>
+                            <li class="Element Alkaline" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ba</abbr>
+                                <data>137,33</data></div></div>
+                            </li>
+                        @{
+                            elementIndex = 72;
                         }
-                        <li class="Period">1</li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Bi</abbr>
-                            @*<em>Углерод</em>*@
-                            <data>12,009</data>
-                        </li>
-                        <li style="grid-column: 3 / 19;"></li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Period">2</li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li style="grid-column: 4 / 14;"></li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Period">3</li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li style="grid-column: 4 / 14;"></li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Period">4</li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Period">5</li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Period">6</li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        @*<li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                                </li>*@
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Period">7</li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        @*<li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                                </li>*@
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="VerticalInner"></li>
-                        <li class="LeftBottomInner"></li>
-                        <li class="BeforeLanthanidesInner">Some useful content</li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                        <li class="Element" type="button">
-                            <b>@(element_index++)</b>
-                            <abbr>Si</abbr>
-                            <data>12,009</data>
-                        </li>
-                    </ol>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Hf</abbr>
+                                <data>178,49</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ta</abbr>
+                                <data>180,95</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>W</abbr>
+                                <data>183,84</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Re</abbr>
+                                <data>186,21</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Os</abbr>
+                                <data>190,23</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ir</abbr>
+                                <data>192,22</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Pt</abbr>
+                                <data>195,08</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Au</abbr>
+                                <data>196,97</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Hg</abbr>
+                                <data>200,59</data></div></div>
+                            </li>
+                            <li class="Element Poor" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Tl</abbr>
+                                <data>204,38</data></div></div>
+                            </li>
+                            <li class="Element Poor" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Pb</abbr>
+                                <data>207,2</data></div></div>
+                            </li>
+                            <li class="Element Poor" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Bi</abbr>
+                                <data>208,98</data></div></div>
+                            </li>
+                            <li class="Element Poor" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Po</abbr>
+                                <data>(209)</data></div></div>
+                            </li>
+                            <li class="Element Metalloid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>At</abbr>
+                                <data>(210)</data></div></div>
+                            </li>
+                            <li class="Element Noble" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Rn</abbr>
+                                <data>(222)</data></div></div>
+                            </li>
+                            <li class="Period">7</li>
+                            <li class="Element Alkali" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Fr</abbr>
+                                <data>(223)</data></div></div>
+                            </li>
+                            <li class="Element Alkaline" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ra</abbr>
+                                <data>(226)</data></div></div>
+                            </li>
+                        @{
+                            elementIndex = 104;
+                        }
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Rf</abbr>
+                                <data>(267)</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Db</abbr>
+                                <data>(268)</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Sg</abbr>
+                                <data>(269)</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Bh</abbr>
+                                <data>(270)</data></div></div>
+                            </li>
+                            <li class="Element Transition" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Hs</abbr>
+                                <data>(277)</data></div></div>
+                            </li>
+                            <li class="Element Unknown" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Mt</abbr>
+                                <data>(278)</data></div></div>
+                            </li>
+                            <li class="Element Unknown" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ds</abbr>
+                                <data>(281)</data></div></div>
+                            </li>
+                            <li class="Element Unknown" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Rg</abbr>
+                                <data>(282)</data></div></div>
+                            </li>
+                            <li class="Element Unknown" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Cn</abbr>
+                                <data>(285)</data></div></div>
+                            </li>
+                            <li class="Element Unknown" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Nh</abbr>
+                                <data>(286)</data></div></div>
+                            </li>
+                            <li class="Element Unknown" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Fl</abbr>
+                                <data>(289)</data></div></div>
+                            </li>
+                            <li class="Element Unknown" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Mc</abbr>
+                                <data>(290)</data></div></div>
+                            </li>
+                            <li class="Element Unknown" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Lv</abbr>
+                                <data>(293)</data></div></div>
+                            </li>
+                            <li class="Element Unknown" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ts</abbr>
+                                <data>(294)</data></div></div>
+                            </li>
+                            <li class="Element Unknown" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Og</abbr>
+                                <data>(294)</data></div></div>
+                            </li>
+                            <li class="VerticalInner"></li>
+                            <li class="LeftBottomInner"></li>
+                            <li class="BeforeLanthanidesInner">Any useful info</li>
+                        @{
+                            elementIndex = 57;
+                        }
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>La</abbr>
+                                <data>138,91</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ce</abbr>
+                                <data>140,12</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Pr</abbr>
+                                <data>140,91</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Nd</abbr>
+                                <data>144,24</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Pm</abbr>
+                                <data>(145)</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Sm</abbr>
+                                <data>150,36</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Eu</abbr>
+                                <data>151,96</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Gd</abbr>
+                                <data>157,25</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Tb</abbr>
+                                <data>158,93</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Dy</abbr>
+                                <data>162,50</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ho</abbr>
+                                <data>164,93</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Er</abbr>
+                                <data>167,26</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Tm</abbr>
+                                <data>168,93</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Yb</abbr>
+                                <data>173,05</data></div></div>
+                            </li>
+                            <li class="Element Lanthanoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Lu</abbr>
+                                <data>174,97</data></div></div>
+                            </li>
+                        @{
+                            elementIndex = 89;
+                        }
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Ac</abbr>
+                                <data>(227)</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Th</abbr>
+                                <data>232,04</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Pa</abbr>
+                                <data>231,04</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>U</abbr>
+                                <data>238,03</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Np</abbr>
+                                <data>(237)</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Pu</abbr>
+                                <data>(244)</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Am</abbr>
+                                <data>(243)</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Cm</abbr>
+                                <data>(247)</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Bk</abbr>
+                                <data>(247)</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Cf</abbr>
+                                <data>(251)</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Es</abbr>
+                                <data>(252)</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Fm</abbr>
+                                <data>(257)</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Md</abbr>
+                                <data>(258)</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>No</abbr>
+                                <data>(259)</data></div></div>
+                            </li>
+                            <li class="Element Actinoid" type="button">
+                                <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
+                                <abbr>Lr</abbr>
+                                <data>(266)</data></div></div>
+                            </li>
+                        </ol>
+                    </div>
                 </div>
-            </div>
+            @*</div>*@
         </div>
         <div class="col-lg-3 px-1">
             <div class="p-3 bg-light">
@@ -671,7 +677,7 @@
     </div>
     <hr>
     <div id="selected_chemical">
-        <h2>Selected element: <span></span></h2>
+        <h2>Selected chemical: <span></span></h2>
     </div>
     <div id="properties_accordion">
     </div>

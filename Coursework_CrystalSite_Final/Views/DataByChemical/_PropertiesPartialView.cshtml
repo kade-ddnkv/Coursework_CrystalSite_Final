@@ -6,28 +6,24 @@
 
 @model IEnumerable<PropertyModel>
 
-<h2>Select property:</h2>
-<br>
-<div class="accordion" id="accordionProperty">
+<h6 class="text-muted">Select property:</h6>
+<div class="mt-2 accordion" id="accordionProperty">
     @foreach (var prop in Model)
     {
         <div class="accordion-item">
             <h2 class="accordion-header" id=@($"heading_prop_{prop.Id}")>
-                <button class="accordion-button collapsed" type="button" data-property-id=@($"{prop.Id}") data-bs-toggle="collapse" data-bs-target=@($"#collapse_prop_{prop.Id}") aria-expanded="true" aria-controls=@($"collapse_prop_{prop.Id}")>
-                    @if (prop.Existing == "true")
-                    {
-                        @prop.NameRus
-                    }
-                    else
-                    {
-                        <span class="text-muted">@prop.NameRus</span>
-                    }
+                <button class="accordion-button collapsed @(prop.Existing == "false" ? "text-muted" : "")" type="button" data-property-id=@($"{prop.Id}") data-bs-toggle="collapse" data-bs-target=@($"#collapse_prop_{prop.Id}") aria-expanded="true" aria-controls=@($"collapse_prop_{prop.Id}")>
+                    @prop.NameRus
                 </button>
             </h2>
             <div id=@($"collapse_prop_{prop.Id}") class="accordion-collapse collapse" aria-labelledby=@($"heading_prop_{prop.Id}") data-bs-parent="#accordionProperty">
                 <div class="accordion-body">
-                    <div id=@($"container_prop_{prop.Id}")>
-                    </div>
+                    @*<div id=@($"container_prop_{prop.Id}")>*@
+                        @if (prop.Existing == "false")
+                        {
+                            <p class="mb-0">No information.</p>
+                        }
+                    @*</div>*@
                 </div>
             </div>
         </div>

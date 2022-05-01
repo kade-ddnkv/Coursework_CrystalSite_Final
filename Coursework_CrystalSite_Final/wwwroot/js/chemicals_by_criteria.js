@@ -1,8 +1,21 @@
 $(document).ready(function () {
-    $('input:not([data-bs-toggle="collapse"])').prop('disabled', true);
+    $('input,select').not('[data-bs-toggle="collapse"]').prop('disabled', true);
     $('[data-bs-toggle="collapse"]').click(function () {
         var collapse_target = $(this).attr('data-bs-target');
-        $(collapse_target).find('input').prop('disabled', function (i, val) {
+        // Инвертирую атрибут disabled.
+        $(collapse_target).find('input,select').prop('disabled', function (i, val) {
+
+            // Свойства с выбором параметра.
+            var attr = $(this).attr('data-param-range-name');
+            if (typeof attr !== 'undefined' && attr !== false) {
+                // Инвертировать только включенный параметр.
+                if ($(this).hasClass("activeParamRange")) {
+                    return !val;
+                } else {
+                    return true;
+                }
+            }
+
             return !val;
         });
     });
@@ -13,24 +26,12 @@ $(document).ready(function () {
         $('input:not([data-bs-toggle="collapse"])').prop('disabled', true);
     });
 
-    $('.BriefChemical > span').click(function () {
-        if ($(this).hasClass(ActiveClass)) {
-            $(this).removeClass(ActiveClass);
-            $('.BriefChemical > span').removeClass(InactiveClass);
-            $('#table_query_result * tbody > tr').show();
-        } else {
-            $('.BriefChemical > span').removeClass(ActiveClass);
-            $('.BriefChemical > span').addClass(InactiveClass);
-            $(this).addClass(ActiveClass);
-            $(this).removeClass(InactiveClass);
-            var chemical = $(this).html();
-            $('#table_query_result * tbody > tr').filter(function () {
-                $(this).toggle($(this).children('td').html().indexOf(chemical) > -1);
-            });
-        }
+    $('[data-param-target]').change(function () {
+        var param_name = $(this).attr('data-param-name');
+        var target = $(this).attr('data-param-target');
+        $('[data-param-range-name=' + param_name + ']').prop('disabled', true);
+        $('[data-param-range-name=' + param_name + ']').removeClass('activeParamRange');
+        $('[data-param-range-id=' + target + ']').prop('disabled', false);
+        $('[data-param-range-id=' + target + ']').addClass('activeParamRange');
     });
 });
-
-//var ActiveClass = 'border border-primary border-1 rounded';
-var ActiveClass = 'shadow p-2 mb-5 bg-light rounded';
-var InactiveClass = 'text-muted';

@@ -2,13 +2,13 @@
 {
     public class QueryResultModel
     {
-        public QueryResultModel(IEnumerable<object> briefChemicalList, DynamicTableModel dynamicTable)
+        public QueryResultModel(List<ChemicalModel> briefChemicalList, DynamicTableModel dynamicTable)
         {
-            this.briefChemicalList = briefChemicalList;
+            this.briefChemicalsList = briefChemicalList;
             this.dynamicTable = dynamicTable;
         }
 
-        public IEnumerable<object> briefChemicalList { get; set; }
+        public List<ChemicalModel> briefChemicalsList { get; set; }
 
         public DynamicTableModel dynamicTable { get; set; }
     }

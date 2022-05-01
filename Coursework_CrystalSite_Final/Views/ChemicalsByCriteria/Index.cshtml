@@ -17,172 +17,180 @@
 <script src="~/js/chemicals_by_criteria.js"></script>
 }
 
-<form action="/ChemicalsByCriteria/PerformQuery">
-    <div class="mb-4">
-        @{
-            currentPropertyName = "Температура плавления";
-        }
-        <div class="form-check form-switch mb-2">
-            <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
-                   data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
-            <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
-        </div>
-        <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
-            <div class="card card-body">
-                <div class="mb-3">
-                    <label class="form-label">Тип:</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="к" required>
-                        <label class="form-check-label" for="input_@(fakeIndexToConnect++)">конгруэнтный</label>
+<div class="mt-3">
+    <form action="/ChemicalsByCriteria/PerformQuery" target="_blank">
+        <div class="mb-4">
+            @{
+                currentPropertyName = "Температура плавления";
+            }
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
+                       data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
+                <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
+            </div>
+            <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
+                <div class="card card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Тип:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="к" required>
+                            <label class="form-check-label" for="input_@(fakeIndexToConnect++)">конгруэнтный</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="и">
+                            <label class="form-check-label" for="input_@(fakeIndexToConnect++)">инконгруэнтный</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="any" checked>
+                            <label class="form-check-label" for="input_@(fakeIndexToConnect++)">любой</label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="и">
-                        <label class="form-check-label" for="input_@(fakeIndexToConnect++)">инконгруэнтный</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="any" checked>
-                        <label class="form-check-label" for="input_@(fakeIndexToConnect++)">любой</label>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <div class="row">
-                        <div class="col-md-4 col-lg-3 col-xl-3">
-                            <label class="form-label">Температура, K :</label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control RangeLeft" name="@currentPropertyName:температура левая" required>
-                                <span class="input-group-text">&le; T &le;</span>
-                                <input type="text" class="form-control RangeRight" name="@currentPropertyName:температура правая" required>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-4 col-lg-3 col-xl-3">
+                                <label class="form-label">Температура, K :</label>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control RangeLeft" name="@currentPropertyName:температура левая" required>
+                                    <span class="input-group-text">&le; T &le;</span>
+                                    <input type="text" class="form-control RangeRight" name="@currentPropertyName:температура правая" required>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="mb-4">
-        @{
-            currentPropertyName = "Плотность";
-        }
-        <div class="form-check form-switch mb-2">
-            <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
-                   data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
-            <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
-        </div>
-        <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
-            <div class="card card-body">
-                <div class="mb-3">
-                    <div class="row">
-                        <div class="col-md-4 col-lg-3 col-xl-3">
-                            <label class="form-label">Плотность, г/см<sup>3</sup> :</label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control RangeLeft" name="@currentPropertyName:плотность левая" required>
-                                <span class="input-group-text">&le; d &le;</span>
-                                <input type="text" class="form-control RangeRight" name="@currentPropertyName:плотность правая" required>
+        <div class="mb-4">
+            @{
+                currentPropertyName = "Плотность";
+            }
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
+                       data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
+                <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
+            </div>
+            <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
+                <div class="card card-body">
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-4 col-lg-3 col-xl-3">
+                                <label class="form-label">Плотность, г/см<sup>3</sup> :</label>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control RangeLeft" name="@currentPropertyName:плотность левая" required>
+                                    <span class="input-group-text">&le; d &le;</span>
+                                    <input type="text" class="form-control RangeRight" name="@currentPropertyName:плотность правая" required>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="mb-4">
-        @{
-            currentPropertyName = "Твердость";
-        }
-        <div class="form-check form-switch mb-2">
-            <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
-                   data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
-            <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
-        </div>
-        <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
-            <div class="card card-body">
-                <div class="mb-3">
-                    <label class="form-label">Тип:</label>
-                    Что такое ГПа? В таблице есть только Моос.
-                </div>
-                <div class="mb-3">
-                    <div class="row">
-                        <div class="col-md-4 col-lg-3 col-xl-3">
-                            <label class="form-label">Твердость, [ГПа, Моос] :</label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control RangeLeft" name="@currentPropertyName:твердость левая" required>
-                                <span class="input-group-text">&le; H &le;</span>
-                                <input type="text" class="form-control RangeRight" name="@currentPropertyName:твердость правая" required>
+        <div class="mb-4">
+            @{
+                currentPropertyName = "Твердость";
+            }
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
+                       data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
+                <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
+            </div>
+            <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
+                <div class="card card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Тип:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="ГПа" required checked>
+                            <label class="form-check-label" for="input_@(fakeIndexToConnect++)">ГПа</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="Моос">
+                            <label class="form-check-label" for="input_@(fakeIndexToConnect++)">Моос</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-4 col-lg-3 col-xl-3">
+                                <label class="form-label">Твердость, [ГПа, Моос] :</label>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control RangeLeft" name="@currentPropertyName:твердость левая" required>
+                                    <span class="input-group-text">&le; H &le;</span>
+                                    <input type="text" class="form-control RangeRight" name="@currentPropertyName:твердость правая" required>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="mb-4">
-        @{
-            currentPropertyName = "Удельная теплоемкость";
-        }
-        <div class="form-check form-switch mb-2">
-            <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
-                   data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
-            <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
-        </div>
-        <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
-            <div class="card card-body">
-                <div class="mb-3">
-                    <label class="form-label">Тип:</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="c<sub>p</sub>" required>
-                        <label class="form-check-label" for="input_@(fakeIndexToConnect++)">C<sub>p</sub></label>
+        <div class="mb-4">
+            @{
+                currentPropertyName = "Удельная теплоемкость";
+            }
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
+                       data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
+                <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
+            </div>
+            <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
+                <div class="card card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Тип:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="c<sub>p</sub>" required>
+                            <label class="form-check-label" for="input_@(fakeIndexToConnect++)">C<sub>p</sub></label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="c<sub>v</sub>">
+                            <label class="form-check-label" for="input_@(fakeIndexToConnect++)">C<sub>v</sub></label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="any" checked>
+                            <label class="form-check-label" for="input_@(fakeIndexToConnect++)">любой</label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="c<sub>v</sub>">
-                        <label class="form-check-label" for="input_@(fakeIndexToConnect++)">C<sub>v</sub></label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="@currentPropertyName:тип" id="input_@fakeIndexToConnect" value="any" checked>
-                        <label class="form-check-label" for="input_@(fakeIndexToConnect++)">любой</label>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <div class="row">
-                        <div class="col-md-4 col-lg-3 col-xl-3">
-                            <label class="form-label">Температура, K :</label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control RangeLeft" name="@currentPropertyName:температура левая" required>
-                                <span class="input-group-text">&le; T &le;</span>
-                                <input type="text" class="form-control RangeRight" name="@currentPropertyName:температура правая" required>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-4 col-lg-3 col-xl-3">
+                                <label class="form-label">Температура, K :</label>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control RangeLeft" name="@currentPropertyName:температура левая" required>
+                                    <span class="input-group-text">&le; T &le;</span>
+                                    <input type="text" class="form-control RangeRight" name="@currentPropertyName:температура правая" required>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <div class="row">
-                        <div class="col-md-4 col-lg-3 col-xl-3">
-                            <label class="form-label">Удельная теплоемкость, Дж/кг*К :</label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control RangeLeft" name="@currentPropertyName:теплоемкость левая" required>
-                                <span class="input-group-text">&le; C &le;</span>
-                                <input type="text" class="form-control RangeRight" name="@currentPropertyName:теплоемкость правая" required>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-4 col-lg-3 col-xl-3">
+                                <label class="form-label">Удельная теплоемкость, Дж/кг*К :</label>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control RangeLeft" name="@currentPropertyName:теплоемкость левая" required>
+                                    <span class="input-group-text">&le; C &le;</span>
+                                    <input type="text" class="form-control RangeRight" name="@currentPropertyName:теплоемкость правая" required>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="mb-4">
-        @{
-            currentPropertyName = "Растворимость";
-        }
-        <div class="form-check form-switch mb-2">
-            <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
-                   data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
-            <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
-        </div>
-        <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
-            <div class="card card-body">
-                <div class="mb-3">
-                    <label class="form-label">Растворитель:</label>
-                    @{
-                        List<string> radiosLabels = new()
+        <div class="mb-4">
+            @{
+                currentPropertyName = "Растворимость";
+            }
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
+                       data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
+                <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
+            </div>
+            <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
+                <div class="card card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Растворитель:</label>
+                        @{
+                            List<string> radiosLabels = new()
             {
                 ("15%B<sub>2</sub>O<sub>3</sub>-85%PbO"),
                 ("C<sub>2</sub>H<sub>5</sub>OH"),
@@ -200,184 +208,302 @@
                 ("муравьиная кислота"),
                 ("этиленгликоль")
             };
-                    }
-                    @foreach (string label in radiosLabels)
-                    {
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="@currentPropertyName:растворитель" id="input_@fakeIndexToConnect" value="@Html.Raw(label)" required>
-                            <label class="form-check-label" for="input_@(fakeIndexToConnect++)">@Html.Raw(label)</label>
-                        </div>
-                    }
-                </div>
-                <div class="mb-3">
-                    <div class="row">
-                        <div class="col-md-4 col-lg-3 col-xl-3">
-                            <label class="form-label">Температура, K :</label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control RangeLeft" name="@currentPropertyName:температура левая" required>
-                                <span class="input-group-text">&le; T &le;</span>
-                                <input type="text" class="form-control RangeRight" name="@currentPropertyName:температура правая" required>
+                        }
+                        @foreach (string label in radiosLabels)
+                        {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="@currentPropertyName:растворитель" id="input_@fakeIndexToConnect" value="@Html.Raw(label)" required>
+                                    <label class="form-check-label" for="input_@(fakeIndexToConnect++)">@Html.Raw(label)</label>
+                                </div>
+                        }
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-4 col-lg-3 col-xl-3">
+                                <label class="form-label">Температура, K :</label>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control RangeLeft" name="@currentPropertyName:температура левая" required>
+                                    <span class="input-group-text">&le; T &le;</span>
+                                    <input type="text" class="form-control RangeRight" name="@currentPropertyName:температура правая" required>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <div class="row">
-                        <div class="col-md-4 col-lg-3 col-xl-3">
-                            <label class="form-label">Растворимость, г/100 г раствора :</label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control RangeLeft" name="@currentPropertyName:растворимость левая" required>
-                                <span class="input-group-text">&le; Sol. &le;</span>
-                                <input type="text" class="form-control RangeRight" name="@currentPropertyName:растворимость правая" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="mb-4">
-        @{
-            currentPropertyName = "Температура Кюри";
-        }
-        <div class="form-check form-switch mb-2">
-            <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
-                   data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
-            <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
-        </div>
-        <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
-            <div class="card card-body">
-                <div class="mb-3">
-                    <div class="row">
-                        <div class="col-md-4 col-lg-3 col-xl-3">
-                            <label class="form-label">Температура, K :</label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control RangeLeft" name="@currentPropertyName:температура левая" required>
-                                <span class="input-group-text">&le; T &le;</span>
-                                <input type="text" class="form-control RangeRight" name="@currentPropertyName:температура правая" required>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-4 col-lg-3 col-xl-3">
+                                <label class="form-label">Растворимость, г/100 г раствора :</label>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control RangeLeft" name="@currentPropertyName:растворимость левая" required>
+                                    <span class="input-group-text">&le; Sol. &le;</span>
+                                    <input type="text" class="form-control RangeRight" name="@currentPropertyName:растворимость правая" required>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="mb-4">
-        @{
-            currentPropertyName = "Сингония";
-        }
-        <div class="form-check form-switch mb-2">
-            <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
-                   data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
-            <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
+        <div class="mb-4">
+            @{
+                currentPropertyName = "Температура Кюри";
+            }
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
+                       data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
+                <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
+            </div>
+            <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
+                <div class="card card-body">
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-4 col-lg-3 col-xl-3">
+                                <label class="form-label">Температура, K :</label>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control RangeLeft" name="@currentPropertyName:температура левая" required>
+                                    <span class="input-group-text">&le; T &le;</span>
+                                    <input type="text" class="form-control RangeRight" name="@currentPropertyName:температура правая" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
-            <div class="card card-body">
-                <div class="mb-3">
-                    @{
-                        List<(string label, string value)> radiosLabelsValues = new()
+        <div class="mb-4">
+            @{
+                currentPropertyName = "Сингония";
+            }
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
+                       data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
+                <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
+            </div>
+            <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
+                <div class="card card-body">
+                    <div class="mb-3">
+                        @{
+                            List<(string value, string label)> radiosValuesLabels = new()
             {
-                ("триклинная", "т"),
-                ("моноклинная", "м"),
-                ("орторомбическая", "р"),
-                ("тетрагональная", "тг"),
-                ("тригональная", "тр"),
-                ("гексагональная", "г"),
-                ("ромбоэдрическая", "рэ"),
-                ("кубическая", "к")
+                ("к", "кубическая"),
+                ("м", "моноклинная"),
+                ("г", "гексагональная"),
+                ("т", "тетрагональная"),
+                ("тр", "триклинная"),
+                ("тг", "тригональная"),
+                ("р", "орторомбическая"),
+                ("рэ", "ромбоэдрическая")
             };
-                    }
-                    @foreach (var pair in radiosLabelsValues)
-                    {
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="@currentPropertyName:сингония" id="input_@fakeIndexToConnect" value="@Html.Raw(pair.value)" required>
-                            <label class="form-check-label" for="input_@(fakeIndexToConnect++)">@Html.Raw(pair.label)</label>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="mb-4">
-        @{
-            currentPropertyName = "Точечная группа";
-        }
-        <div class="form-check form-switch mb-2">
-            <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
-                   data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
-            <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
-        </div>
-        <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
-            <div class="card card-body">
-                <div class="mb-3">
-                    <label class="form-label">Что такое "Точечная группа"? В таблице такого нет.</label></>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="mb-4">
-        @{
-            currentPropertyName = "Параметры элементарной ячейки";
-        }
-        <div class="form-check form-switch mb-2">
-            <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
-                   data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
-            <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
-        </div>
-        <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
-            <div class="card card-body">
-                <div class="mb-3">
-                    <label class="form-label">Параметры решетки, A :</label>
-                    <div class="row">
-                        <div class="col-md-4 col-lg-3 col-xl-3">
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control RangeLeft" name="@currentPropertyName:a левая" required>
-                                <span class="input-group-text">&le; a &le;</span>
-                                <input type="text" class="form-control RangeRight" name="@currentPropertyName:a правая" required>
-                            </div>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control RangeLeft" name="@currentPropertyName:b левая" required>
-                                <span class="input-group-text">&le; b &le;</span>
-                                <input type="text" class="form-control RangeRight" name="@currentPropertyName:b правая" required>
-                            </div>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control RangeLeft" name="@currentPropertyName:c левая" required>
-                                <span class="input-group-text">&le; c &le;</span>
-                                <input type="text" class="form-control RangeRight" name="@currentPropertyName:c правая" required>
-                            </div>
-                        </div>
-                        <label class="form-label">Почему "Углы, град." неактивно? Сложный пункт, потом сделаю.</label>
+                        }
+                        @foreach (var pair in radiosValuesLabels)
+                        {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="@currentPropertyName:сингония" id="input_@fakeIndexToConnect" value="@Html.Raw(pair.value)" required>
+                                    <label class="form-check-label" for="input_@(fakeIndexToConnect++)">@Html.Raw(pair.label)</label>
+                                </div>
+                        }
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    @await Html.PartialAsync("_oneRangeCriteriaPartialView", new _oneRangeCriteriaModel() {
-    CurrentPropertyName = "Тепловое расширение",
-    RangeLabel = "α,10<sup>-6</sup>K<sup>-1</sup> :",
-    RangeSymbol = "α",
-    RangeValue = "расширение"
-    })
-    @await Html.PartialAsync("_oneRangeCriteriaPartialView", new _oneRangeCriteriaModel() {
-    CurrentPropertyName = "Теплопроводность",
-    RangeLabel = "λ, Вт/м*град :",
-    RangeSymbol = "λ",
-    RangeValue = "теплопроводность"
-    })
-    @await Html.PartialAsync("_oneRangeCriteriaPartialView", new _oneRangeCriteriaModel() {
-    CurrentPropertyName = "Диэлектрическая проницаемость",
-    RangeLabel = "ε :",
-    RangeSymbol = "ε",
-    RangeValue = "проницаемость"
-    })
-    @await Html.PartialAsync("_oneRangeCriteriaPartialView", new _oneRangeCriteriaModel() {
-    CurrentPropertyName = "Тангенс угла диэлектрических потерь",
-    RangeLabel = "δ :",
-    RangeSymbol = "δ",
-    RangeValue = "тангенс"
-    })
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <br />
-    <button type="reset" class="btn btn-light">Reset</button>
-</form>
+        <div class="mb-4">
+            @{
+                currentPropertyName = "Точечная группа";
+            }
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
+                       data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
+                <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
+            </div>
+            <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
+                <div class="card card-body">
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-4 col-lg-3 col-xl-3">
+                                <label class="form-label">Тип:</label>
+                                @{
+                                    List<string> groupOptions = new()
+            {
+                "1",
+                "1(-)",
+                "2",
+                "2(-)",
+                "2/m",
+                "222",
+                "23",
+                "2mm",
+                "3",
+                "3(-)m",
+                "32",
+                "3m",
+                "4(-)2m",
+                "4(-)3m",
+                "4/m",
+                "4/mmm",
+                "422",
+                "42m",
+                "43m",
+                "4mm",
+                "6",
+                "6(-)",
+                "6(-)m2",
+                "6/m",
+                "6/mmm",
+                "622",
+                "6mc",
+                "6mm",
+                "m",
+                "m2m",
+                "m3",
+                "m3m",
+                "mm2",
+                "mmm",
+                "P6<sub>3</su",
+                "НФ",
+            };
+                                }
+                                <select class="form-select form-select-sm" aria-label=".form-select-sm" name="@currentPropertyName:тип">
+                                    @foreach (string option in groupOptions)
+                                    {
+                                            <option value="@option">@option</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="mb-4">
+            @{
+                currentPropertyName = "Параметры элементарной ячейки";
+            }
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" name="@currentPropertyName:switch" type="checkbox" id="property_@fakeIndexToConnect" autocomplete="off"
+                       data-bs-toggle="collapse" data-bs-target="#collapse_@fakeIndexToConnect" aria-expanded="false" aria-controls="collapse_@fakeIndexToConnect">
+                <label class="form-check-label" for="property_@fakeIndexToConnect">@currentPropertyName</label>
+            </div>
+            <div class="collapse" id="collapse_@(fakeIndexToConnect++)">
+                <div class="card card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Параметры решетки, A :</label>
+                        <div class="row">
+                            <div class="col-md-4 col-lg-3 col-xl-3">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control RangeLeft" name="@currentPropertyName:a левая" required>
+                                    <span class="input-group-text">&le; a &le;</span>
+                                    <input type="text" class="form-control RangeRight" name="@currentPropertyName:a правая" required>
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control RangeLeft" name="@currentPropertyName:b левая" required>
+                                    <span class="input-group-text">&le; b &le;</span>
+                                    <input type="text" class="form-control RangeRight" name="@currentPropertyName:b правая" required>
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control RangeLeft" name="@currentPropertyName:c левая" required>
+                                    <span class="input-group-text">&le; c &le;</span>
+                                    <input type="text" class="form-control RangeRight" name="@currentPropertyName:c правая" required>
+                                </div>
+                            </div>
+                            <label class="form-label">Почему "Углы, град." неактивно? Сложный пункт, потом сделаю.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        @await Html.PartialAsync("_OneRangeCriteriaPartialView", new _OneRangeCriteriaModel() {
+        CurrentPropertyName = "Тепловое расширение",
+        RangeLabel = "α,10<sup>-6</sup>K<sup>-1</sup> :",
+        RangeSymbol = "α",
+        RangeName = "расширение"
+        })
+        @await Html.PartialAsync("_OneRangeCriteriaPartialView", new _OneRangeCriteriaModel() {
+        CurrentPropertyName = "Теплопроводность",
+        RangeLabel = "λ, Вт/м*град :",
+        RangeSymbol = "λ",
+        RangeName = "теплопроводность"
+        })
+        @await Html.PartialAsync("_OneRangeCriteriaPartialView", new _OneRangeCriteriaModel() {
+        CurrentPropertyName = "Диэлектрическая проницаемость",
+        RangeLabel = "ε :",
+        RangeSymbol = "ε",
+        RangeName = "проницаемость"
+        })
+        @await Html.PartialAsync("_OneRangeCriteriaPartialView", new _OneRangeCriteriaModel() {
+        CurrentPropertyName = "Тангенс угла диэлектрических потерь",
+        RangeLabel = "δ :",
+        RangeSymbol = "δ",
+        RangeName = "тангенс"
+        })
+        @await Html.PartialAsync("_RangesByParamsPartialView", new _RangesByParamsModel() {
+        CurrentPropertyName = "Пьезоэлектрические коэффициенты",
+        NumberOfParams = 4,
+        RangeLabels = new() {"h, 10<sup>9</sup> Н/Кл :", "g, 10<sup>-3</sup> м<sup>2</sup>/Кл :", "e, Кл/м<sup>2</sup> :", "d, 10<sup>-12</sup> Кл/Н :"},
+        RangeSymbols = new() {"h", "g", "e", "d"},
+        RangeNames = new() {"h", "g", "e", "d"}
+        })
+        @await Html.PartialAsync("_OneRangeCriteriaPartialView", new _OneRangeCriteriaModel() {
+        CurrentPropertyName = "Коэффициенты электромеханической связи",
+        RangeLabel = "k :",
+        RangeSymbol = "k",
+        RangeName = "k"
+        })
+        @await Html.PartialAsync("_RangesByParamsPartialView", new _RangesByParamsModel() {
+        CurrentPropertyName = "Упругие постоянные",
+        NumberOfParams = 2,
+        RangeLabels = new() {"с<sub>ijkl</sub> 10<sup>11</sup> Н/м <sup>2</sup> :", "s<sub>ijkl</sub> 10<sup>-11</sup> Н/м <sup>2</sup> :"},
+        RangeSymbols = new() {"c", "s"},
+        RangeNames = new() {"c", "s"}
+        })
+        @await Html.PartialAsync("_OneRangeCriteriaPartialView", new _OneRangeCriteriaModel() {
+        CurrentPropertyName = "Полоса пропускания",
+        RangeLabel = "B, мкм :",
+        RangeSymbol = "B",
+        RangeName = "B"
+        })
+        @await Html.PartialAsync("_OneRangeCriteriaPartialView", new _OneRangeCriteriaModel() {
+        CurrentPropertyName = "Показатели преломления",
+        RangeLabel = "n :",
+        RangeSymbol = "n",
+        RangeName = "n"
+        })
+        @await Html.PartialAsync("_RangesByParamsPartialView", new _RangesByParamsModel() {
+        CurrentPropertyName = "Коэффициенты линейного электрооптического эффекта",
+        NumberOfParams = 2,
+        RangeLabels = new() {"r<sub>ijk</sub> 10<sup>-12</sup> м/В <sup>2</sup> :", "g<sub>ijk</sub> м<sup>2</sup>/Кл :"},
+        RangeSymbols = new() {"r", "g"},
+        RangeNames = new() {"r", "g"}
+        })
+        @await Html.PartialAsync("_OneRangeCriteriaPartialView", new _OneRangeCriteriaModel() {
+        CurrentPropertyName = "Нелинейные оптические коэффициенты",
+        RangeLabel = "d <sub>ijk</sub> 10<sup>-12</sup> м/В :",
+        RangeSymbol = "d",
+        RangeName = "d"
+        })
+        @await Html.PartialAsync("_OneRangeCriteriaPartialView", new _OneRangeCriteriaModel() {
+        CurrentPropertyName = "Компоненты тензора Миллера",
+        RangeLabel = "δ <sub>ijk</sub> 10<sup>-2</sup> м/В :",
+        RangeSymbol = "δ",
+        RangeName = "delta"
+        })
+        @await Html.PartialAsync("_RangesByParamsPartialView", new _RangesByParamsModel() {
+        CurrentPropertyName = "Пьезооптические и упругооптические коэффициенты",
+        NumberOfParams = 2,
+        RangeLabels = new() {"π<sub>ijkl</sub> 10<sup>-12</sup> м/В <sup>2</sup> :", "p<sub>ijkl</sub> :"},
+        RangeSymbols = new() {"π", "p"},
+        RangeNames = new() {"pi", "p<"}
+        })
+        @await Html.PartialAsync("_RangesByParamsPartialView", new _RangesByParamsModel() {
+        CurrentPropertyName = "Коэффициент затухания (D) или скорость распространения (S) упругих волн",
+        NumberOfParams = 2,
+        RangeLabels = new() {"D, дБ/см :", "S, &lt;10<sup>5</sup>см/cек :"},
+        RangeSymbols = new() {"D", "S"},
+        RangeNames = new() {"D", "S"}
+        })
+        <div class="vstack gap-2 col-md-5 mx-auto">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-outline-secondary">Reset</button>
+        </div>
+    </form>
+</div>
 
