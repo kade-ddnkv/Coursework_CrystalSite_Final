@@ -1,0 +1,39 @@
+﻿@{
+    Layout = null;
+}
+@model BookModel
+@{
+    BookModel book = Model;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container p-3">
+        <div class="bg-light border">
+            @(book.BookNumber).
+            @if (book.Authors != null)
+            {
+                <b>@Html.Raw(book.Authors) </b>
+            }
+            @if (book.ArticleName != null)
+            {
+                <i>@Html.Raw(book.ArticleName). </i>
+            }
+            @if (book.BookNameAndPages != null)
+            {
+                <span>// @Html.Raw(book.BookNameAndPages). </span>
+            }
+            @if (book.DoiLink != null)
+            {
+                <span>DOI: <a href="https://dx.doi.org/@book.DoiLink" target="_blank">@book.DoiLink</a></span>
+            }
+        </div>
+    </div>
+</body>
+</html>

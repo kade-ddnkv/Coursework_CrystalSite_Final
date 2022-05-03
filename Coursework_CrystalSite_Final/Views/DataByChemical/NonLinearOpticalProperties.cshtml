@@ -1,0 +1,26 @@
+﻿@section Scripts
+{
+<script src="~/js/create_datatables.js"></script>
+}
+
+@model (string ChemicalName, PropertyTableModel NonLinearOpticalCoefficients, PropertyTableModel ComponentsOfTheMillerTensor, List<ImageModel> Images)
+
+<div class="mb-3">
+    <h1 class="display-6">@Html.Raw(Model.ChemicalName)</h1>
+</div>
+<a class="text-dark" style="text-decoration:none;" href="#charts">
+    <h6 class="mb-2 text-muted">↓ к графикам</h6>
+</a>
+<div class="row">
+    <h1 class="display-6">Нелинейно-оптические коэффициенты:</h1>
+    @await Html.PartialAsync("_TableWithSyngonyPartialView", Model.NonLinearOpticalCoefficients.TableWithSyngonyModel)
+</div>
+<hr>
+<div class="row">
+    <h1 class="display-6">Компоненты тензора Миллера:</h1>
+    @await Html.PartialAsync("_TableWithSyngonyPartialView", Model.ComponentsOfTheMillerTensor.TableWithSyngonyModel)
+</div>
+<div class="my-3">
+    <h6 id="charts">Графики:</h6>
+    @await Html.PartialAsync("_ImagesPartialView", Model.Images)
+</div>

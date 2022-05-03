@@ -1,32 +1,20 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model List<ImageModel>
+
+@if (Model.Count == 0)
+{
+    <h6 class="text-muted">Нет графиков</h6>
 }
-
-@model ImageQueryModel
-
-<div class="p-3">
-    <div class="pb-3">
-        <h3>Chemical: @Html.Raw(Model.ChemicalFormula)</h3>
-        <h3>Property: @Model.PropertyName</h3>
-    </div>
-    @if (Model.Images.Count == 0)
-    {
-        <h3>Нет графиков</h3>
-    }
-    else
-    {
-        <div class="row">
-            @foreach (ImageModel image in Model.Images)
-            {
-                <div class="col-lg-6 col-xl-4 col-md-12">
-                    <div class="p-3">
-                        <img src="https://crystal.imet-db.ru/ru/CrystalPics/@(image.ImagePath).gif" class="img-fluid" alt="" />
-                        <p class="small-image-label text-muted">@Html.Raw(image.Name)</p>
-                    </div>
+else
+{
+    <div class="row">
+        @foreach (ImageModel image in Model)
+        {
+            <div class="col-lg-6 col-xl-4 col-md-12">
+                <div class="p-3">
+                    <img src="https://crystal.imet-db.ru/ru/CrystalPics/@(image.ImagePath).gif" class="img-fluid" alt="" />
+                    <p class="small-image-label text-muted">@Html.Raw(image.Name)</p>
                 </div>
-            }
-        </div>
-    }
-</div>
+            </div>
+        }
+    </div>
+}

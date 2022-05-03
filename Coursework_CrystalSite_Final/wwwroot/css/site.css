@@ -27,3 +27,11 @@ body {
 .small-image-label {
     font-size: 0.5rem;
 }
+
+.bookLink {
+    text-decoration: none;
+}
+
+.chemicalLink {
+    text-decoration: none;
+}

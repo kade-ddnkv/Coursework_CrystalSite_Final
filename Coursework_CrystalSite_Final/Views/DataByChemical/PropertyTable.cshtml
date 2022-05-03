@@ -1,0 +1,33 @@
+﻿@section Scripts
+{
+<script src="~/js/create_datatables.js"></script>
+}
+
+@model (PropertyTableModel TableModel, List<ImageModel> Images)
+
+<div class="mb-3">
+    <h1 class="display-6">@Html.Raw(Model.TableModel.ChemicalName)</h1>
+    <h1 class="display-6">@Html.Raw(Model.TableModel.PropertyName)</h1>
+</div>
+
+<div class="PropertyTableContainer">
+    <a class="text-dark" style="text-decoration:none;" href="#charts">
+        <h6 class="mb-2 text-muted">↓ к графикам</h6>
+    </a>
+    @if (Model.TableModel.TableWithSyngonyModel != null)
+    {
+        @await Html.PartialAsync("_TableWithSyngonyPartialView", Model.TableModel.TableWithSyngonyModel)
+    }
+    else if (Model.TableModel.TableWithoutSyngonyModel != null)
+    {
+        @await Html.PartialAsync("_TableWithoutSyngonyPartialView", Model.TableModel.TableWithoutSyngonyModel)
+    }
+    else
+    {
+        <p>Нет информации</p>
+    }
+    <div class="my-3">
+        <h6 id="charts">Графики:</h6>
+        @await Html.PartialAsync("_ImagesPartialView", Model.Images)
+    </div>
+</div>

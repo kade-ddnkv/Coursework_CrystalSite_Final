@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model CriteriaQueryTableModel
+
+<div class="table table-responsive p-1">
+    <table class="table table-sm sortable">
+        <thead>
+            <tr>
+                @foreach (string column in Model.ColumnNames)
+                {
+                    <th>@column</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (IEnumerable<object> row in Model.Rows)
+            {
+                <tr>
+                    @foreach (object elem in row)
+                    {
+                        <td>@Html.Raw(elem)</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

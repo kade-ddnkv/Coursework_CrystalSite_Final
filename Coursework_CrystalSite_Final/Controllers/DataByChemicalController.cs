@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace Coursework_CrystalSite_Final.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("data-by-chemical")]
     public class DataByChemicalController : Controller
     {
         private Dictionary<string, string> syngonyNamesMapper = new()
@@ -23,33 +23,16 @@ namespace Coursework_CrystalSite_Final.Controllers
             { "рэ", "ромбоэдрическая" }
         };
 
-        [HttpGet("index")]
-        public IActionResult Index()
+        [HttpGet("ch/{chemicalUrlName}/")]
+        public IActionResult GetChemicalProperties([FromRoute] string chemicalUrlName)
         {
-            return View();
-        }
-
-        [HttpGet("get-chemicals-by-elements")]
-        public IActionResult GetChemicalsByName([FromQuery] string elements)
-        {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
-            string[] chemStrings = elements.Split('-', StringSplitOptions.RemoveEmptyEntries);
-            List<ChemicalModel> chemicals = new();
-            if (chemStrings.Length != 0)
+            if (!ChemicalModel.UrlNameToId.ContainsKey(chemicalUrlName))
             {
-                string query = @"SELECT HeadClue as Id, System as HtmlName FROM dbo._HeadTablConv ";
-                string filter = "WHERE " + string.Join(" AND ", chemStrings.Select(chem => $"Help LIKE '%{chem}%'"));
-                chemicals = db.Query<ChemicalModel>(query + filter).ToList();
+                return NotFound("No chemical with such name");
             }
-            chemicals.Sort(ChemicalModel.CompareChemicals);
-            return PartialView("_FoundChemicalsPartialView", chemicals);
-        }
-
-        [HttpGet("get-properties-by-chemical")]
-        public IActionResult GetChemicalProperties([FromQuery(Name = "chemical_id")] int chemicalId)
-        {
+            int chemicalId = ChemicalModel.UrlNameToId[chemicalUrlName];
             using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
-            IEnumerable<PropertyModel> propertiesExistance = db.Query<PropertyModel>(@"
+            IEnumerable<PropertyModel> properties = db.Query<PropertyModel>(@"
                     SELECT dbo.Properties.NOMPROP AS Id
 	                    ,NAZVPROP AS NameRus
 	                    ,TableName
@@ -65,7 +48,7 @@ namespace Coursework_CrystalSite_Final.Controllers
 	                    WHERE HeadClue = @chemicalId
 	                    ) AS existing_props ON dbo.Properties.NOMPROP = existing_props.NOMPROP;
                 ", new { chemicalId = chemicalId });
-            return PartialView("_PropertiesPartialView", propertiesExistance);
+            return View("Properties", (chemicalUrlName, properties));
         }
 
         [NonAction]
@@ -93,26 +76,35 @@ namespace Coursework_CrystalSite_Final.Controllers
             }
         }
 
+        public IEnumerable<dynamic> GetPropertyValuesFromViews(int chemicalId, string propertyNameRus)
+        {
+            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            return db.Query<dynamic>(
+                $"SELECT * FROM dbo.[{propertyNameRus}] WHERE [Номер соединения] = @chemicalId"
+                , new { chemicalId });
+        }
+
         [NonAction]
-        public (string, IEnumerable<dynamic>) GetPropertyValuesFromViews(int chemicalId, int propertyId)
+        public string GetPropertyViewNameRus(int propertyId)
         {
             using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
             string nameOfPropertyRus = db.QuerySingleOrDefault<dynamic>(
                 "SELECT NAZVPROP as ViewNameRus FROM dbo.Properties WHERE NOMPROP = @propertyId"
                 , new { propertyId }).ViewNameRus;
             nameOfPropertyRus = FixNameOfPropertyToView(nameOfPropertyRus);
-            return (nameOfPropertyRus, db.Query<dynamic>(
-                $"SELECT * FROM dbo.[{nameOfPropertyRus}] WHERE [Номер соединения] = @chemicalId"
-                , new { chemicalId }));
+            return nameOfPropertyRus;
         }
 
         [NonAction]
-        public dynamic GetAnalyticalReview(int chemicalId)
+        public (string ChemicalName, string AnalyticalReview) GetAnalyticalReview(int chemicalId)
         {
             using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
-            return db.QueryFirstOrDefault<dynamic>(
+            string analyticalReview = db.QueryFirstOrDefault<dynamic>(
             $"SELECT [Аналитический обзор] as AnalyticalReview FROM dbo.[Аналитический обзор] WHERE [Номер соединения] = @chemicalId"
-            , new { chemicalId });
+            , new { chemicalId }).AnalyticalReview;
+            analyticalReview = analyticalReview.Replace("bk.asp?Bknumber=", "/books/id/");
+            analyticalReview = analyticalReview.Replace("/ru/Pictures/pdf.gif", "https://crystal.imet-db.ru/ru/Pictures/pdf.gif");
+            return (ChemicalModel.IdToHtmlName[chemicalId], analyticalReview);
         }
 
         [HttpGet("get-chemical-formula")]
@@ -125,45 +117,79 @@ namespace Coursework_CrystalSite_Final.Controllers
         }
 
         [NonAction]
-        public string GetPropertyNameRus(int propertyId)
+        public PropertyTableModel MakeTableModel(string chemicalHtmlName, string propertyNameRus, IEnumerable<dynamic> queryResult)
         {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
-            return db.QuerySingleOrDefault<dynamic>(
-                "SELECT NAZVPROP as ViewNameRus FROM dbo.Properties WHERE NOMPROP = @propertyId"
-                , new { propertyId }).ViewNameRus;
+            PropertyTableModel tableModel = new()
+            {
+                PropertyName = propertyNameRus,
+                ChemicalName = chemicalHtmlName,
+            };
+            // Если ответ пустой, то поля tableModel останутся null.
+            if (queryResult.Count() != 0)
+            {
+                // Разделяю на заголовки и строки.
+                List<string> columnNames = ((IDictionary<string, object>)queryResult.FirstOrDefault()).Keys.Skip(1).ToList();
+                // В строках пропускаю первый столбец - это номер элемента.
+                // Последний столбец - это ссылка на литературу.
+                IEnumerable<List<object>> rows = queryResult.Select(row =>
+                    {
+                        var rowOfValues = ((IDictionary<string, dynamic>)row).Values.Skip(1).ToList();
+                        rowOfValues[rowOfValues.Count - 1] = LinkBuilder.CreateBookLink(rowOfValues.Last());
+                        return rowOfValues;
+                    });
+
+                if (columnNames.Contains("Сингония"))
+                {
+                    int syngColumnIndex = columnNames.IndexOf("Сингония");
+                    List<SyngonyModel> syngGroups = rows
+                        .GroupBy(row => row[syngColumnIndex])
+                        .Select(group => new SyngonyModel()
+                        {
+                            Name = syngonyNamesMapper[group.Key as string],
+                            Rows = group.Select(row => row.Skip(1))
+                        })
+                        .ToList();
+                    tableModel.TableWithSyngonyModel = new()
+                    {
+                        ColumnNames = columnNames.Skip(1).ToList(),
+                        SyngGroups = syngGroups
+                    };
+                }
+                else
+                {
+                    tableModel.TableWithoutSyngonyModel = new()
+                    {
+                        ColumnNames = columnNames,
+                        Rows = rows,
+                    };
+                }
+            }
+            return tableModel;
         }
 
         [NonAction]
-        public dynamic GetPropertyValuesByViewNameWithSyngony(int chemicalId, string propertyName)
+        public dynamic TempForNonLinear(int chemicalId, string propertyName)
         {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
-            var queryResult = db.Query<dynamic>(
-                $"SELECT * FROM dbo.[{propertyName}] WHERE [Номер соединения] = @chemicalId"
-                , new { chemicalId });
-            List<string> columnNames = ((IDictionary<string, object>)queryResult.FirstOrDefault()).Keys.Skip(1).ToList();
-            IEnumerable<List<object>> rows = queryResult.Select(x => ((IDictionary<string, dynamic>)x).Values.Skip(1).ToList());
-
-            int syngColumnIndex = columnNames.IndexOf("Сингония");
-            var syngGroups = rows
-                .GroupBy(row => row[syngColumnIndex])
-                .Select(group => new { name = syngonyNamesMapper[group.Key as string], rows = group.Select(row => row.Skip(1)) })
-                .ToList();
-            return new { propertyName, columnNames = columnNames.Skip(1).ToList(), syngGroups };
+            var queryResult = GetPropertyValuesFromViews(chemicalId, propertyName);
+            return MakeTableModel(ChemicalModel.IdToHtmlName[chemicalId], propertyName, queryResult);
         }
 
         [NonAction]
-        public dynamic GetNonLinearOpticalPropertiesValues(int chemicalId)
+        public (string ChemicalName, PropertyTableModel NonLinearOpticalCoefficients, 
+            PropertyTableModel ComponentsOfTheMillerTensor, List<ImageModel> Images)
+            GetNonLinearOpticalPropertiesValues(int chemicalId)
         {
-            var nonLinearOpticalCoefficients = GetPropertyValuesByViewNameWithSyngony(chemicalId, "Нелинейные оптические коэффициенты");
-            var componentsOfTheMillerTensor = GetPropertyValuesByViewNameWithSyngony(chemicalId, "Компоненты тензора Миллера (10-2 м/Кл)");
-            return new { nonLinearOpticalCoefficients, componentsOfTheMillerTensor };
+            var nonLinearOpticalCoefficients = TempForNonLinear(chemicalId, "Нелинейные оптические коэффициенты");
+            var componentsOfTheMillerTensor = TempForNonLinear(chemicalId, "Компоненты тензора Миллера (10-2 м/Кл)");
+            return (ChemicalModel.IdToHtmlName[chemicalId], nonLinearOpticalCoefficients, 
+                componentsOfTheMillerTensor, GetImages(chemicalId, 29));
         }
 
         [NonAction]
-        public dynamic GetLiterature(int chemicalId)
+        public (string ChemicalName, IEnumerable<BookModel> Books) GetLiterature(int chemicalId)
         {
             using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
-            return db.Query<BookModel>(
+            return (ChemicalModel.IdToHtmlName[chemicalId], db.Query<BookModel>(
                 @"SELECT litr.[Номер ссылки] as BookNumber
 	                , [Ф.И.О. авторов] as Authors
 	                , [Выходные данные] as BookNameAndPages
@@ -172,77 +198,64 @@ namespace Coursework_CrystalSite_Final.Controllers
                 FROM dbo.[Литературные ссылки] as litr
                 JOIN dbo.[Библиографические ссылки] as bibl ON litr.[Номер ссылки] = bibl.[Номер ссылки]
                 WHERE [Номер соединения] = @chemicalId"
-                , new { chemicalId });
+                , new { chemicalId }));
         }
 
-        [HttpGet("get-property-table")]
-        public IActionResult GetPropertyValues([FromQuery(Name = "chemical_id")] int chemicalId, [FromQuery(Name = "property_id")] int propertyId)
+        [HttpGet("ch/{chemicalUrlName}/{propertyUrlName}/")]
+        public IActionResult GetPropertyValues([FromRoute] string chemicalUrlName, [FromRoute] string propertyUrlName)
         {
-
+            if (!ChemicalModel.UrlNameToId.ContainsKey(chemicalUrlName))
+            {
+                return NotFound("No chemical with such name");
+            }
+            if (!PropertyModel.UrlNameToId.ContainsKey(propertyUrlName))
+            {
+                return NotFound("No property with such name");
+            }
+            int chemicalId = ChemicalModel.UrlNameToId[chemicalUrlName];
+            int propertyId = PropertyModel.UrlNameToId[propertyUrlName];
             // Особые свойства обрабатываются отдельно.
             switch (propertyId)
             {
                 case 1:
                     // "Аналитический обзор"
-                    return PartialView("_AnalyticalReviewPartialView", GetAnalyticalReview(chemicalId));
+                    return View("AnalyticalReview", GetAnalyticalReview(chemicalId));
                 case 4:
                     // "Состав соединения"
-                    return PartialView("_ChemicalFormulaPartialView", GetChemicalFormula(chemicalId));
+                    return View("ChemicalFormula", ChemicalModel.IdToHtmlName[chemicalId]);
                 case 25:
                     // "Нелинейные оптические свойства"
-                    return PartialView("_NonLinearOpticalPropertiesPartialView", GetNonLinearOpticalPropertiesValues(chemicalId));
+                    return View("NonLinearOpticalProperties", GetNonLinearOpticalPropertiesValues(chemicalId));
                 case 29:
                     // "Литература"
-                    return PartialView("_LiteraturePartialView", GetLiterature(chemicalId));
+                    return View("Literature", GetLiterature(chemicalId));
             }
 
-            string propertyName;
-            List<string> columnNames;
-            IEnumerable<List<object>> rows;
+            string propertyNameRus;
             IEnumerable<dynamic> queryResult;
             try
             {
-                (propertyName, queryResult) = GetPropertyValuesFromViews(chemicalId, propertyId);
+                propertyNameRus = GetPropertyViewNameRus(propertyId);
+                queryResult = GetPropertyValuesFromViews(chemicalId, propertyNameRus);
             }
             catch (SqlException)
             {
                 throw new NotImplementedException("Special property that doesn't have a russian view. Rememeber it and hadle this property in a different way.");
-                (propertyName, queryResult) = GetPropertyValuesFromInnerTables(chemicalId, propertyId);
-            }
-            columnNames = ((IDictionary<string, object>)queryResult.FirstOrDefault())?.Keys?.Skip(1)?.ToList();
-            rows = queryResult.Select(x => ((IDictionary<string, dynamic>)x).Values.Skip(1).ToList());
-
-            if (columnNames.Contains("Сингония"))
-            {
-                int syngColumnIndex = columnNames.IndexOf("Сингония");
-                var syngGroups = rows
-                    .GroupBy(row => row[syngColumnIndex])
-                    .Select(group => new { name = syngonyNamesMapper[group.Key as string], rows = group.Select(row => row.Skip(1)) })
-                    .ToList();
-                return PartialView("_SyngonyPartialView", new { propertyName, columnNames = columnNames.Skip(1).ToList(), syngGroups });
+                (propertyNameRus, queryResult) = GetPropertyValuesFromInnerTables(chemicalId, propertyId);
             }
 
-            return PartialView("_SyngonyPartialView", new { propertyName, columnNames, rows });
+            return View("PropertyTable",
+                (MakeTableModel(ChemicalModel.IdToHtmlName[chemicalId], propertyNameRus, queryResult), GetImages(chemicalId, propertyId)));
         }
 
-        [HttpGet("get-images")]
-        public IActionResult GetPropertyImages([FromQuery(Name = "chemical_id")] int chemicalId, [FromQuery(Name = "property_id")] int propertyId)
+        [NonAction]
+        public List<ImageModel> GetImages(int chemicalId, int propertyId)
         {
             using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
-            var images = db.Query<ImageModel>(
+            return db.Query<ImageModel>(
             @"SELECT [Название файла графика] as ImagePath, [Подпись к рисунку] as Name FROM dbo.[Ссылки на графики] 
                 WHERE [Номер соединения] = @chemicalId AND [Номер свойства] = @propertyId"
             , new { chemicalId, propertyId }).ToList();
-
-            if (images.Count == 0)
-            {
-                return BadRequest("No charts");
-            }
-            ImageQueryModel imageQuery = new();
-            imageQuery.ChemicalFormula = GetChemicalFormula(chemicalId);
-            imageQuery.PropertyName = GetPropertyNameRus(propertyId);
-            imageQuery.Images = images;
-            return View("_ImagesPartialView", imageQuery);
         }
     }
 }

@@ -10,14 +10,17 @@ using System.Text.RegularExpressions;
 
 namespace Coursework_CrystalSite_Final.Controllers
 {
+    [ApiController]
+    [Route("chemicals-by-criteria")]
     public class ChemicalsByCriteriaController : Controller
     {
-
+        [HttpGet("query-setup")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [NonAction]
         private string propertyNameToViewName(string propertyName)
         {
             switch(propertyName)
@@ -35,6 +38,7 @@ namespace Coursework_CrystalSite_Final.Controllers
             }
         }
 
+        [NonAction]
         private IActionResult MultipleCriteriaSearch(Dictionary<string, Dictionary<string, string>> properties)
         {
             var connection = new SqlConnection(DatabaseConnection.connectionString);
@@ -263,9 +267,10 @@ namespace Coursework_CrystalSite_Final.Controllers
 
             return View("QueryResult",
                 new QueryResultModel(briefChemicalsList,
-                new DynamicTableModel(kataQuery.Get(), properties.Count == 1)));
+                new CriteriaQueryTableModel(kataQuery.Get(), properties.Count == 1)));
         }
 
+        [HttpGet("perform-query")]
         public IActionResult PerformQuery()
         {
             try
@@ -293,6 +298,7 @@ namespace Coursework_CrystalSite_Final.Controllers
             }
         }
 
+        [NonAction]
         private void joinOneRangeCriteria(Query kataQuery, KeyValuePair<string, Dictionary<string, string>> prop,
             string columnBetweenName, string rangeName, params (string Name, string Alias)[] columnSelects)
         {

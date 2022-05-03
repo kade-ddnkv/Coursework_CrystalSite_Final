@@ -1,27 +1,21 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    ViewData["Title"] = "Get data by chemical";
+﻿@{
+    ViewData["Title"] = "Search chemicals";
     int elementIndex = 1;
 }
 
 @section PageCss
 {
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
-<link rel="stylesheet" href="~/css/data_by_chemical.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/search_chemicals.css" asp-append-version="true" />
 }
 
 @section Scripts
 {
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
-<script src="~/js/data_by_chemical.js"></script>
+<script src="~/js/search_chemicals.js"></script>
 }
 
 <div class="container px-0">
     <div class="row my-4">
         <div class="col-lg-9 px-1">
-            @*<div class="ratio ratio-16x9">*@
                 <div class="p-2 bg-light">
                     <div class="scroll-hor">
                         <ol class="mendeleev-table">
@@ -43,15 +37,15 @@
                             <li class="Valence">VII A</li>
                             <li class="Valence">VIII A</li>
                             <li class="Valence"></li>
-                            @for (int i = 1; i <= 18; i++)
-                            {
-                                <li class="Group">@i</li>
-                            }
+                        @for (int i = 1; i <= 18; i++)
+                        {
+                                    <li class="Group">@i</li>
+                        }
                             <li class="Period">1</li>
                             <li class="Element Nonmetal" type="button">
                                 <div class="ratio ratio-1x1"><div><b>@(elementIndex++)</b>
                                 <abbr>H</abbr>
-                                @*<em>Углерод</em>*@
+                                    @*<em>Углерод</em>*@
                                 <data>1,008</data></div></div>
                             </li>
                             <li style="grid-column: 3 / 19;"></li>
@@ -666,7 +660,6 @@
                         </ol>
                     </div>
                 </div>
-            @*</div>*@
         </div>
         <div class="col-lg-3 px-1">
             <div class="p-3 bg-light">
@@ -675,11 +668,4 @@
             </div>
         </div>
     </div>
-    <hr>
-    <div id="selected_chemical">
-        <h2>Selected chemical: <span></span></h2>
-    </div>
-    <div id="properties_accordion">
-    </div>
-    <hr>
 </div>

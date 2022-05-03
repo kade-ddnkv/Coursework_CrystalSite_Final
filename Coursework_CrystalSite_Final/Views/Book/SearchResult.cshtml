@@ -1,0 +1,29 @@
+﻿@model IEnumerable<BookModel>
+
+<div class="mb-3">
+    <h1 class="display-6">Результаты поиска по авторам</h1>
+</div>
+<div class="vstack gap-3">
+    @foreach (BookModel book in Model)
+    {
+        <div class="bg-light border">
+            @(book.BookNumber).
+            @if (book.Authors != null)
+            {
+                <b>@Html.Raw(book.Authors) </b>
+            }
+            @if (book.ArticleName != null)
+            {
+                <i>@Html.Raw(book.ArticleName). </i>
+            }
+            @if (book.BookNameAndPages != null)
+            {
+                <span>// @Html.Raw(book.BookNameAndPages). </span>
+            }
+            @if (book.DoiLink != null)
+            {
+                <span>DOI: <a href="https://dx.doi.org/@book.DoiLink" target="_blank">@book.DoiLink</a></span>
+            }
+        </div>
+    }
+</div>

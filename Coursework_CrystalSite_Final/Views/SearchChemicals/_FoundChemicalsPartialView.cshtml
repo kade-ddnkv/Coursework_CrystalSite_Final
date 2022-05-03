@@ -1,0 +1,21 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<ChemicalModel>
+
+@if (Model.Count == 0)
+{
+    <h6>No matches</h6>
+}
+else
+{
+    foreach (var chemical in Model)
+    {
+        <a href="/data-by-chemical/ch/@ChemicalModel.RemoveHtmlTags(chemical.HtmlName)" class="text-dark" style="text-decoration: none;">
+            <h6 class="Chemical" data-chemical-id=@chemical.Id>@Html.Raw(chemical.HtmlName)</h6>
+        </a>
+    }
+}
