@@ -1,8 +1,5 @@
 ﻿@using System.Web
 @using System.Text.RegularExpressions
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 
 @model _OneRangeCriteriaModel
 
@@ -10,9 +7,9 @@
     string uniqueId = Regex.Replace(Model.CurrentPropertyName, "[ ().-]+", "");
 }
 
-<div class="mb-4">
+<div class="mb-3">
     <div class="form-check form-switch mb-2">
-        <input class="form-check-input" name="@Model.CurrentPropertyName:switch" type="checkbox" id="property_@uniqueId" autocomplete="off"
+        <input class="form-check-input" type="checkbox" id="property_@uniqueId" autocomplete="off"
                data-bs-toggle="collapse" data-bs-target="#collapse_@uniqueId" aria-expanded="false" aria-controls="collapse_@uniqueId">
         <label class="form-check-label" for="property_@uniqueId">@Model.CurrentPropertyName</label>
     </div>
@@ -23,9 +20,9 @@
                     <div class="col-md-4 col-lg-3 col-xl-3">
                         <label class="form-label">@Html.Raw(Model.RangeLabel)</label>
                         <div class="input-group input-group-sm">
-                            <input type="text" class="form-control RangeLeft" name="@Model.CurrentPropertyName:@Model.RangeName левая" required>
+                            <input type="number" step="any" class="form-control RangeLeft" name="@Model.CurrentPropertyName:@Model.RangeName левая" required>
                             <span class="input-group-text">&le; @Model.RangeSymbol &le;</span>
-                            <input type="text" class="form-control RangeRight" name="@Model.CurrentPropertyName:@Model.RangeName правая" required>
+                            <input type="number" step="any" class="form-control RangeRight" name="@Model.CurrentPropertyName:@Model.RangeName правая" required>
                         </div>
                     </div>
                 </div>

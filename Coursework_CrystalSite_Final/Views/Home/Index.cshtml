@@ -3,6 +3,10 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
+    <h1 class="display-4 mb-4">Crystal DB</h1>
+    <div class="vstack gap-3 mx-auto">
+        <a class="text-decoration-none text-primary" asp-area="" asp-controller="SearchChemicals" asp-action="Index">Данные по соединениям</a>
+        <a class="text-decoration-none text-primary" asp-area="" asp-controller="ChemicalsByCriteria" asp-action="Index">Поиск соединений по критериям</a>
+        <a class="text-decoration-none text-muted" asp-area="" asp-controller="SearchChemicals" asp-action="AllChemicals">Список всех доступных соединений</a>
+    </div>
 </div>

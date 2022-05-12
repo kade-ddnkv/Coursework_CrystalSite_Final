@@ -1,14 +1,27 @@
 $(document).ready(function () {
+    // Работа с Составом элементов.
+    var elementsCount = 0;
+    $('#add_element').click(function () {
+        $('<input>').attr({
+            type: 'text',
+            class: 'form-control',
+            placeholder: 'Nb',
+            name: 'Состав соединения:el_' + elementsCount++,
+        }).appendTo('#elements');
+    });
+    $('#add_element').trigger('click');
+
+    // Работа с disabled.
     $('input,select').not('[data-bs-toggle="collapse"]').prop('disabled', true);
     $('[data-bs-toggle="collapse"]').click(function () {
         var collapse_target = $(this).attr('data-bs-target');
-        // ���������� ������� disabled.
+        // Инвертирую атрибут disabled.
         $(collapse_target).find('input,select').prop('disabled', function (i, val) {
 
-            // �������� � ������� ���������.
+            // Свойства с выбором параметра.
             var attr = $(this).attr('data-param-range-name');
             if (typeof attr !== 'undefined' && attr !== false) {
-                // ������������� ������ ���������� ��������.
+                // Инвертировать только включенный параметр.
                 if ($(this).hasClass("activeParamRange")) {
                     return !val;
                 } else {
@@ -20,12 +33,7 @@ $(document).ready(function () {
         });
     });
 
-
-    $(':reset').click(function () {
-        $('.collapse').removeClass('show');
-        $('input:not([data-bs-toggle="collapse"])').prop('disabled', true);
-    });
-
+    // Работа с критериями, у которых есть выбор по параметру.
     $('[data-param-target]').change(function () {
         var param_name = $(this).attr('data-param-name');
         var target = $(this).attr('data-param-target');

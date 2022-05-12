@@ -4,10 +4,20 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+	  <EnableComHosting>true</EnableComHosting>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="libs\**" />
+    <Content Remove="libs\**" />
+    <EmbeddedResource Remove="libs\**" />
+    <None Remove="libs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="SqlKata" Version="2.3.7" />
     <PackageReference Include="SqlKata.Execution" Version="2.3.7" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />

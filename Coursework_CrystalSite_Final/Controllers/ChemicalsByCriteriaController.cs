@@ -1,5 +1,6 @@
 ﻿//using Dapper;
 using Coursework_CrystalSite_Final.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SqlKata;
 using SqlKata.Compilers;
@@ -10,20 +11,34 @@ using System.Text.RegularExpressions;
 
 namespace Coursework_CrystalSite_Final.Controllers
 {
+    /// <summary>
+    /// Контроллер для обработки многокритериальных запросов для поиска соединений.
+    /// </summary>
     [ApiController]
+    [Authorize]
     [Route("chemicals-by-criteria")]
     public class ChemicalsByCriteriaController : Controller
     {
+        /// <summary>
+        /// Возвращает основное представление для настройки многокритериального поиска.
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
         [HttpGet("query-setup")]
         public IActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Отображает русское название свойства в название соответствующего представления в БД.
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
         [NonAction]
-        private string propertyNameToViewName(string propertyName)
+        private string PropertyNameToViewName(string propertyName)
         {
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "Сингония":
                     return "Сингонии соединений";
@@ -38,10 +53,50 @@ namespace Coursework_CrystalSite_Final.Controllers
             }
         }
 
+        /// <summary>
+        /// Определяет, делается ли многокритериальный запрос только по одному критерию.
+        /// </summary>
+        /// <param name="properties"></param>
+        /// <returns></returns>
+        [NonAction]
+        private bool IsOnlyOneCriteria(Dictionary<string, Dictionary<string, string>> properties)
+        {
+            return properties.Count == 1 && properties.Keys.First() != "Состав соединения";
+        }
+
+        /// <summary>
+        /// Кодирует греческую букву в ее html-код.
+        /// </summary>
+        /// <param name="letter"></param>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
+        [NonAction]
+        private string GreekLettersEncode(string letter)
+        {
+            switch (letter)
+            {
+                case "α":
+                    return "&alpha;";
+                case "β":
+                    return "&beta;";
+                case "γ":
+                    return "&gamma;";
+                default:
+                    throw new NotSupportedException("This greek letter is not supported");
+            }
+        }
+
+        /// <summary>
+        /// Основной метод для многокритериального запроса.
+        /// Строит запрос в БД по критериям.
+        /// Возвращает представление с результатами запроса.
+        /// </summary>
+        /// <param name="properties"></param>
+        /// <returns></returns>
         [NonAction]
         private IActionResult MultipleCriteriaSearch(Dictionary<string, Dictionary<string, string>> properties)
         {
-            var connection = new SqlConnection(DatabaseConnection.connectionString);
+            var connection = new SqlConnection(DatabaseConnection.ConnectionString);
             var compiler = new SqlServerCompiler();
             var db = new QueryFactory(connection, compiler);
 
@@ -51,6 +106,17 @@ namespace Coursework_CrystalSite_Final.Controllers
             {
                 switch (prop.Key)
                 {
+                    case "Состав соединения":
+                        kataQuery.Join($"_HeadTablConv", $"Соединения.Номер соединения", $"_HeadTablConv.HeadClue");
+                        foreach (string inputName in prop.Value.Keys)
+                        {
+                            if (inputName.Contains("el"))
+                            {
+                                kataQuery.WhereLike($"_HeadTablConv.Help", $"%-{prop.Value[inputName]}-%");
+                            }
+                        }
+                        break;
+
                     case "Температура плавления":
                         kataQuery.Join($"{prop.Key}", $"Соединения.Номер соединения", $"{prop.Key}.Номер соединения")
                             .WhereBetween($"{prop.Key}.Температура, K", $"{prop.Value["температура левая"]}", $"{prop.Value["температура правая"]}")
@@ -109,41 +175,87 @@ namespace Coursework_CrystalSite_Final.Controllers
                         break;
 
                     case "Сингония":
-                        viewName = propertyNameToViewName(prop.Key);
+                        viewName = PropertyNameToViewName(prop.Key);
                         kataQuery.Join($"{viewName}", $"Соединения.Номер соединения", $"{viewName}.Номер соединения")
                             .Where($"{viewName}.Обозначение сингонии", $"{prop.Value["сингония"]}")
                             .Select($"{viewName}.Обозначение сингонии");
                         break;
 
                     case "Точечная группа":
-                        viewName = propertyNameToViewName(prop.Key);
+                        viewName = PropertyNameToViewName(prop.Key);
                         kataQuery.Join($"{viewName}", $"Соединения.Номер соединения", $"{viewName}.Номер соединения")
                             .Where($"{viewName}.Точечная группа симметрии", $"{prop.Value["тип"]}")
                             .Select($"{viewName}.Точечная группа симметрии");
                         break;
 
+                    case "Параметры элементарной ячейки":
+                        kataQuery.Join($"{prop.Key}", $"Соединения.Номер соединения", $"{prop.Key}.Номер соединения");
+                        HashSet<string> activeA = new();
+                        HashSet<string> activeAngles = new();
+                        foreach (string inputName in prop.Value.Keys)
+                        {
+
+                            string type = inputName.Split(" ")[0];
+                            if (type == "a" || type == "b" || type == "c")
+                            {
+                                activeA.Add(type);
+                            }
+                            else
+                            {
+                                activeAngles.Add(type);
+                            }
+                        }
+                        if (activeA.Count > 0)
+                        {
+                            string whereActiveA = string.Join(" OR ", activeA.Select(a =>
+                            {
+                                string left = prop.Value.ContainsKey($"{a} левая") ? $"AND [Значение линейного параметра, A] >= {prop.Value[$"{a} левая"]}" : "";
+                                string right = prop.Value.ContainsKey($"{a} правая") ? $"AND [Значение линейного параметра, A] <= {prop.Value[$"{a} правая"]}" : "";
+                                string orWhere = $"([Название линейного параметра] = '{a}' {left} {right})";
+                                return orWhere;
+                            }));
+                            whereActiveA += $" OR ({string.Join(" AND ", activeA.Select(a => $"[Название линейного параметра] != '{a}'"))})";
+                            kataQuery.WhereRaw("(" + whereActiveA + ")");
+                            kataQuery.Select($"Название линейного параметра as Парам. решетки (назв.)", $"Значение линейного параметра, A as Парам. решетки (знач.)");
+                        }
+                        if (activeAngles.Count > 0)
+                        {
+                            string whereActiveAngles = string.Join(" OR ", activeAngles.Select(angle =>
+                            {
+                                string left = prop.Value.ContainsKey($"{angle} левая") ? $"AND [Значение угла, град.] >= {prop.Value[$"{angle} левая"]}" : "";
+                                string right = prop.Value.ContainsKey($"{angle} правая") ? $"AND [Значение угла, град.] <= {prop.Value[$"{angle} правая"]}" : "";
+                                string orWhere = $"([Название угла] = '{GreekLettersEncode(angle)}' {left} {right})";
+                                return orWhere;
+                            }));
+                            whereActiveAngles += $" OR ({string.Join(" AND ", activeAngles.Select(angle => $"[Название угла] != '{GreekLettersEncode(angle)}'"))})";
+                            whereActiveAngles += $" OR ([Название угла] IS NULL)";
+                            kataQuery.WhereRaw("(" + whereActiveAngles + ")");
+                            kataQuery.Select($"Название угла as Парам. элем. ячейки (назв. угла)", $"Значение угла, град. as Парам. элем. ячейки (знач. угла)");
+                        }
+                        break;
+
                     case "Тепловое расширение":
-                        joinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "расширение",
+                        JoinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "расширение",
                             ("Обозначение коэффициента", "Тепл. расшир. (обозн. коэф.)"), ("Значение коэффициента", "Тепл. расшир. (знач. коэф.)"));
                         break;
 
                     case "Теплопроводность":
-                        joinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "теплопроводность",
+                        JoinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "теплопроводность",
                             ("Обозначение коэффициента", "Теплопр-ть (обозн. коэф.)"), ("Значение коэффициента", "Теплопр-ть (знач. коэф.)"));
                         break;
 
                     case "Диэлектрическая проницаемость":
-                        joinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "проницаемость",
+                        JoinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "проницаемость",
                             ("Обозначение коэффициента", "Диэл. прониц. (обозн. коэф.)"), ("Значение коэффициента", "Диэл. прониц. (знач. коэф.)"));
                         break;
 
                     case "Тангенс угла диэлектрических потерь":
-                        joinOneRangeCriteria(kataQuery, prop, "Значение тангенса угла", "тангенс",
+                        JoinOneRangeCriteria(kataQuery, prop, "Значение тангенса угла", "тангенс",
                             ("Обозначение тангенса угла потерь", "Обозначение тангенса угла потерь"), ("Значение тангенса угла", "Значение тангенса угла"));
                         break;
 
                     case "Пьезоэлектрические коэффициенты":
-                        viewName = propertyNameToViewName(prop.Key);
+                        viewName = PropertyNameToViewName(prop.Key);
                         kataQuery.Join($"{viewName}", $"Соединения.Номер соединения", $"{viewName}.Номер соединения")
                             .WhereLike($"{viewName}.Обозначение коэффициента", $"%{prop.Value["параметр"]}%")
                             .WhereBetween($"{prop.Key}.Значение коэффициента"
@@ -154,12 +266,12 @@ namespace Coursework_CrystalSite_Final.Controllers
                         break;
 
                     case "Коэффициенты электромеханической связи":
-                        joinOneRangeCriteria(kataQuery, prop, "Значение коэффицента", "k",
+                        JoinOneRangeCriteria(kataQuery, prop, "Значение коэффицента", "k",
                             ("Обозначение коэффициента", "Эл.-механ. связь (обозн. коэф.)"), ("Значение коэффицента", "Эл.-механ. связь (знач. коэф.)"));
                         break;
 
                     case "Упругие постоянные":
-                        viewName = propertyNameToViewName(prop.Key);
+                        viewName = PropertyNameToViewName(prop.Key);
                         kataQuery.Join($"{viewName}", $"Соединения.Номер соединения", $"{viewName}.Номер соединения")
                             .WhereLike($"{viewName}.Условия измерения", $"%{prop.Value["параметр"]}%")
                             .WhereBetween($"{prop.Key}.Обозначение коэффициента"
@@ -170,7 +282,7 @@ namespace Coursework_CrystalSite_Final.Controllers
                         break;
 
                     case "Полоса пропускания":
-                        viewName = propertyNameToViewName(prop.Key);
+                        viewName = PropertyNameToViewName(prop.Key);
                         kataQuery.Join($"{viewName}", $"Соединения.Номер соединения", $"{viewName}.Номер соединения")
                             .WhereBetween($"{prop.Key}.Нижняя граница", $"{prop.Value["B левая"]}", $"{prop.Value["B правая"]}")
                             .WhereBetween($"{prop.Key}.Верхняя граница", $"{prop.Value["B левая"]}", $"{prop.Value["B правая"]}")
@@ -179,12 +291,12 @@ namespace Coursework_CrystalSite_Final.Controllers
                         break;
 
                     case "Показатели преломления":
-                        joinOneRangeCriteria(kataQuery, prop, "Значение показателя", "n",
+                        JoinOneRangeCriteria(kataQuery, prop, "Значение показателя", "n",
                             ("Обозначение показателя", "Показат. преломл. (обозн.)"), ("Значение показателя", "Показат. преломл. (знач.)"));
                         break;
 
                     case "Коэффициенты линейного электрооптического эффекта":
-                        viewName = propertyNameToViewName(prop.Key);
+                        viewName = PropertyNameToViewName(prop.Key);
                         kataQuery.Join($"{viewName}", $"Соединения.Номер соединения", $"{viewName}.Номер соединения")
                             .WhereLike($"{viewName}.Обозначение коэффициента", $"%{prop.Value["параметр"]}%")
                             .WhereBetween($"{prop.Key}.Значение коэффициента"
@@ -195,12 +307,12 @@ namespace Coursework_CrystalSite_Final.Controllers
                         break;
 
                     case "Нелинейные оптические коэффициенты":
-                        joinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "d",
+                        JoinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "d",
                             ("Обозначение коэффициента", "Нелин. оптич. (обозн.)"), ("Значение коэффициента", "Нелин. оптич. (знач.)"));
                         break;
 
                     case "Компоненты тензора Миллера":
-                        joinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "delta",
+                        JoinOneRangeCriteria(kataQuery, prop, "Значение коэффициента", "delta",
                             ("Обозначение коэффициента", "Комп. тензора Миллера. (обозн.)"), ("Значение коэффициента", "Комп. тензора Миллера. (знач.)"));
                         break;
 
@@ -213,7 +325,7 @@ namespace Coursework_CrystalSite_Final.Controllers
                         {
                             prop.Value["параметр"] = "p<";
                         }
-                        viewName = propertyNameToViewName(prop.Key);
+                        viewName = PropertyNameToViewName(prop.Key);
                         kataQuery.Join($"{viewName}", $"Соединения.Номер соединения", $"{viewName}.Номер соединения")
                             .WhereLike($"{viewName}.Обозначение коэффициента", $"%{prop.Value["параметр"]}%")
                             .WhereBetween($"{prop.Key}.Значение коэффициента"
@@ -224,7 +336,7 @@ namespace Coursework_CrystalSite_Final.Controllers
                         break;
 
                     case "Коэффициент затухания (D) или скорость распространения (S) упругих волн":
-                        viewName = propertyNameToViewName(prop.Key);
+                        viewName = PropertyNameToViewName(prop.Key);
                         kataQuery.Join($"{viewName}", $"Соединения.Номер соединения", $"{viewName}.Номер соединения");
                         if (prop.Value["параметр"] == "D")
                         {
@@ -241,8 +353,57 @@ namespace Coursework_CrystalSite_Final.Controllers
                             .Select($"{viewName}.Скорость волны, 10^5 см/сек");
                         }
                         break;
+
+                    case "Акустооптическая добротность":
+                        viewName = PropertyNameToViewName(prop.Key);
+                        kataQuery.Join($"{viewName}", $"Соединения.Номер соединения", $"{viewName}.Номер соединения");
+                        string m1Column = "M1, 10-7 см2*cек/г";
+                        string m2Column = "M2, 10-18 сек3/г";
+                        string m3Column = "M3, 10-12 см*сек2/г";
+                        if (prop.Value.ContainsKey("M1 левая"))
+                        {
+                            kataQuery.WhereRaw($"[{m1Column}] >= {prop.Value["M1 левая"]}");
+                        }
+                        if (prop.Value.ContainsKey("M1 правая"))
+                        {
+                            kataQuery.WhereRaw($"[{m1Column}] <= {prop.Value["M1 правая"]}");
+                        }
+                        if (prop.Value.ContainsKey("M2 левая"))
+                        {
+                            kataQuery.WhereRaw($"[{m2Column}] >= {prop.Value["M2 левая"]}");
+                        }
+                        if (prop.Value.ContainsKey("M2 правая"))
+                        {
+                            kataQuery.WhereRaw($"[{m2Column}] <= {prop.Value["M2 правая"]}");
+                        }
+                        if (prop.Value.ContainsKey("M3 левая"))
+                        {
+                            kataQuery.WhereRaw($"[{m3Column}] >= {prop.Value["M3 левая"]}");
+                        }
+                        if (prop.Value.ContainsKey("M3 правая"))
+                        {
+                            kataQuery.WhereRaw($"[{m3Column}] <= {prop.Value["M3 правая"]}");
+                        }
+                        // Select
+                        if (prop.Value.ContainsKey("M1 левая") || prop.Value.ContainsKey("M1 правая"))
+                        {
+                            kataQuery.Select(m1Column);
+                        }
+                        if (prop.Value.ContainsKey("M2 левая") || prop.Value.ContainsKey("M2 правая"))
+                        {
+                            kataQuery.Select(m2Column);
+                        }
+                        if (prop.Value.ContainsKey("M3 левая") || prop.Value.ContainsKey("M3 правая"))
+                        {
+                            kataQuery.Select(m3Column);
+                        }
+                        break;
                 }
             }
+
+            // На случай, если нужно проверить результат построенного запроса.
+            SqlResult result = compiler.Compile(kataQuery);
+            string sql = result.Sql;
 
             // Достаются только формулы содинений.
             var chemicalsOnlyQuery = kataQuery.Clone();
@@ -252,24 +413,24 @@ namespace Coursework_CrystalSite_Final.Controllers
                 .Select(x => new ChemicalModel() { Id = x.Id, HtmlName = x.HtmlName }).ToList();
             // Сортировка формул соединений.
             briefChemicalsList.Sort(ChemicalModel.CompareChemicals);
-            
+
             // Если критерий был всего один, можно выдать всю информацию из таблицы по нему.
-            if (properties.Count == 1)
+            if (IsOnlyOneCriteria(properties))
             {
                 kataQuery.Clauses.RemoveAll(clause => clause.Component == "select");
                 kataQuery.Select($"Соединения.Соединение");
-                kataQuery.Select($"{propertyNameToViewName(properties.Keys.First())}.*");
+                kataQuery.Select($"{PropertyNameToViewName(properties.Keys.First())}.*");
             }
-
-            // На случай, если нужно проверить результат построенного запроса.
-            SqlResult result = compiler.Compile(kataQuery);
-            string sql = result.Sql;
 
             return View("QueryResult",
                 new QueryResultModel(briefChemicalsList,
-                new CriteriaQueryTableModel(kataQuery.Get(), properties.Count == 1)));
+                new CriteriaQueryTableModel(kataQuery.Get(), IsOnlyOneCriteria(properties))));
         }
 
+        /// <summary>
+        /// Возвращает представление с результатами многокритериального запроса.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("perform-query")]
         public IActionResult PerformQuery()
         {
@@ -278,16 +439,20 @@ namespace Coursework_CrystalSite_Final.Controllers
                 Dictionary<string, Dictionary<string, string>> properties = new();
                 foreach (string key in Request.Query.Keys)
                 {
-                    string[] splitted = key.Split(':');
-                    string property_name = splitted[0];
-                    string param = splitted[1];
-                    string value = Request.Query[key];
-
-                    if (!properties.ContainsKey(property_name))
+                    // Добавляются только непустые вводимые значения.
+                    if (Request.Query[key] != "")
                     {
-                        properties[property_name] = new Dictionary<string, string>();
+                        string[] splitted = key.Split(':');
+                        string property_name = splitted[0];
+                        string param = splitted[1];
+                        string value = Request.Query[key];
+
+                        if (!properties.ContainsKey(property_name))
+                        {
+                            properties[property_name] = new Dictionary<string, string>();
+                        }
+                        properties[property_name].Add(param, value);
                     }
-                    properties[property_name].Add(param, value);
                 }
 
                 return MultipleCriteriaSearch(properties);
@@ -298,11 +463,20 @@ namespace Coursework_CrystalSite_Final.Controllers
             }
         }
 
+        /// <summary>
+        /// Вспомогательный метод для уменьшения дублирования кода.
+        /// Подключает в общий запрос критерий с единственным параметром, входящим в определенный интервал.
+        /// </summary>
+        /// <param name="kataQuery"></param>
+        /// <param name="prop"></param>
+        /// <param name="columnBetweenName"></param>
+        /// <param name="rangeName"></param>
+        /// <param name="columnSelects"></param>
         [NonAction]
-        private void joinOneRangeCriteria(Query kataQuery, KeyValuePair<string, Dictionary<string, string>> prop,
+        private void JoinOneRangeCriteria(Query kataQuery, KeyValuePair<string, Dictionary<string, string>> prop,
             string columnBetweenName, string rangeName, params (string Name, string Alias)[] columnSelects)
         {
-            string viewName = propertyNameToViewName(prop.Key);
+            string viewName = PropertyNameToViewName(prop.Key);
             kataQuery.Join($"{viewName}", $"Соединения.Номер соединения", $"{viewName}.Номер соединения")
                 .WhereBetween($"{viewName}.{columnBetweenName}", $"{prop.Value[$"{rangeName} левая"]}", $"{prop.Value[$"{rangeName} правая"]}");
             foreach ((string Name, string Alias) columnName in columnSelects)

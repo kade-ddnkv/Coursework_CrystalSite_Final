@@ -8,19 +8,39 @@
 <div class="mb-3">
     <h1 class="display-6">@Html.Raw(Model.ChemicalName)</h1>
 </div>
-<a class="text-dark" style="text-decoration:none;" href="#charts">
-    <h6 class="mb-2 text-muted">↓ к графикам</h6>
-</a>
+@if (Model.Images.Count != 0)
+{
+    <a class="text-dark" style="text-decoration:none;" href="#charts">
+        <h6 class="mb-2 text-muted">↓ к графикам</h6>
+    </a>
+}
 <div class="row">
     <h1 class="display-6">Нелинейно-оптические коэффициенты:</h1>
-    @await Html.PartialAsync("_TableWithSyngonyPartialView", Model.NonLinearOpticalCoefficients.TableWithSyngonyModel)
+    @if (Model.NonLinearOpticalCoefficients.TableWithSyngonyModel != null)
+    {
+        @await Html.PartialAsync("_TableWithSyngonyPartialView", Model.NonLinearOpticalCoefficients.TableWithSyngonyModel)
+    }
+    else
+    {
+        <p>Нет информации</p>
+    }
 </div>
 <hr>
 <div class="row">
     <h1 class="display-6">Компоненты тензора Миллера:</h1>
-    @await Html.PartialAsync("_TableWithSyngonyPartialView", Model.ComponentsOfTheMillerTensor.TableWithSyngonyModel)
+    @if (Model.ComponentsOfTheMillerTensor.TableWithSyngonyModel != null)
+    {
+        @await Html.PartialAsync("_TableWithSyngonyPartialView", Model.ComponentsOfTheMillerTensor.TableWithSyngonyModel)
+    }
+    else
+    {
+        <p>Нет информации</p>
+    }
 </div>
-<div class="my-3">
-    <h6 id="charts">Графики:</h6>
-    @await Html.PartialAsync("_ImagesPartialView", Model.Images)
-</div>
+@if (Model.Images.Count != 0)
+{
+    <div class="my-3">
+        <h6 id="charts">Графики:</h6>
+        @await Html.PartialAsync("_ImagesPartialView", Model.Images)
+    </div>
+}

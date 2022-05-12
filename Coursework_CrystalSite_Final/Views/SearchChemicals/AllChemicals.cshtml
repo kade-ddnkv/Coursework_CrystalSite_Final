@@ -1,0 +1,12 @@
+﻿@model List<ChemicalModel>
+
+<h1 class="display-6">Список всех доступных соединений</h1>
+<p>
+    Для удобного поиска по соединениям перейдите по <a class="text-primary text-decoration-none" asp-area="" asp-controller="SearchChemicals" asp-action="Index">ссылке</a>
+</p>
+@foreach (ChemicalModel chemical in Model)
+{
+    <a href="/data-by-chemical/ch/@ChemicalModel.RemoveHtmlTags(chemical.HtmlName)" class="text-dark" style="text-decoration: none;">
+        <h6 class="Chemical" data-chemical-id=@chemical.Id>@Html.Raw(chemical.HtmlName)</h6>
+    </a>
+}

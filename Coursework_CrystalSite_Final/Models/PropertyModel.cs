@@ -4,14 +4,29 @@ using System.Data.SqlClient;
 
 namespace Coursework_CrystalSite_Final.Models
 {
+    /// <summary>
+    /// Модель свойства из базы данных.
+    /// </summary>
     public class PropertyModel
     {
+        /// <summary>
+        /// Номер свойства в БД.
+        /// </summary>
         public int Id { get; set; }
 
+        /// <summary>
+        /// Русское название свойства.
+        /// </summary>
         public string NameRus { get; set; }
 
+        /// <summary>
+        /// Есть ли данные по свойству для выбранного соединения.
+        /// </summary>
         public string Existing { get; set; }
 
+        /// <summary>
+        /// Отображение русского названия свойства в url-имя.
+        /// </summary>
         public static Dictionary<string, string> NameRusToUrlName = new()
         {
             { "Аналитический обзор", "Analytical review" },
@@ -42,15 +57,21 @@ namespace Coursework_CrystalSite_Final.Models
             { "Литература", "Literature" },
         };
 
+        /// <summary>
+        /// Отображение url-имени свойства в номер в БД.
+        /// </summary>
         public static Dictionary<string, int> UrlNameToId = new();
 
+        /// <summary>
+        /// Статический конструктор. Заполняет все отображения для свойств.
+        /// </summary>
         static PropertyModel()
         {
             foreach (var pair in NameRusToUrlName)
             {
                 NameRusToUrlName[pair.Key] = pair.Value.ToLower().Replace(" ", "-");
             }
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
             List<PropertyModel> properties = db.Query<PropertyModel>(
                 "SELECT [Номер свойства] as Id ,[Название свойства] as NameRus FROM dbo.[Свойства соединений]").ToList();
             foreach (PropertyModel property in properties)

@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Coursework_CrystalSite_Final.Models.Account">
+    <Position X="5.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Account.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models.BookModel">
+    <Position X="8" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIgAAAEAAADAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BookModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models.ChemicalModel">
+    <Position X="0.5" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAABCAAAAAAQAAAAAAQAAAIAAABAA=</HashCode>
+      <FileName>Models\ChemicalModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models.CriteriaQueryTableModel">
+    <Position X="3" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\CriteriaQueryTableModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models.ErrorViewModel">
+    <Position X="5.5" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ErrorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models.ImageModel">
+    <Position X="8" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ImageModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models.ImageQueryModel">
+    <Position X="0.5" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAABAAAA=</HashCode>
+      <FileName>Models\ImageQueryModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models.PropertyModel">
+    <Position X="3" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAECAAAAAAAAAAAAAAAAAAAAASAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\PropertyModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models.PropertyTableModel">
+    <Position X="5.5" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAEAAABAAAA=</HashCode>
+      <FileName>Models\PropertyTableModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models.QueryResultModel">
+    <Position X="8" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Models\QueryResultModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models.SyngonyModel">
+    <Position X="0.5" Y="8.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SyngonyModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models.TableWithoutSyngonyModel">
+    <Position X="3" Y="8.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TableWithoutSyngonyModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models.TableWithSyngonyModel">
+    <Position X="5.5" Y="8.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TableWithSyngonyModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models._OneRangeCriteriaModel">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAABAAAAAAAAAAAEAEAAAAAAAAAAA=</HashCode>
+      <FileName>Models\_OneRangeCriteriaModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coursework_CrystalSite_Final.Models._RangesByParamsModel">
+    <Position X="3" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAQAAAAAIAAAAAAAAAAAAAAAAEAEAAAAAAAAAAA=</HashCode>
+      <FileName>Models\_RangesByParamsModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

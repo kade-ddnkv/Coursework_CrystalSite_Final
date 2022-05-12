@@ -1,8 +1,5 @@
 ﻿@using System.Web
 @using System.Text.RegularExpressions
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 
 @model _RangesByParamsModel
 
@@ -10,9 +7,9 @@
     string uniqueId = Regex.Replace(Model.CurrentPropertyName, "[ ().-]+", "");
 }
 
-<div class="mb-4">
+<div class="mb-3">
     <div class="form-check form-switch mb-2">
-        <input class="form-check-input" name="@Model.CurrentPropertyName:switch" type="checkbox" id="property_@uniqueId" autocomplete="off"
+        <input class="form-check-input" type="checkbox" id="property_@uniqueId" autocomplete="off"
                data-bs-toggle="collapse" data-bs-target="#collapse_@uniqueId" aria-expanded="false" aria-controls="collapse_@uniqueId">
         <label class="form-check-label" for="property_@uniqueId">@Model.CurrentPropertyName</label>
     </div>
@@ -36,9 +33,9 @@
                         {
                             <label class="form-label">@Html.Raw(Model.RangeLabels[i])</label>
                             <div class="input-group input-group-sm pb-2">
-                                <input type="text" class="form-control RangeLeft" name="@Model.CurrentPropertyName:@Model.RangeNames[i] левая" data-param-range-name="@uniqueId" data-param-range-id="@(uniqueId + Model.RangeSymbols[i])" required disabled>
+                                <input type="number" step="any" class="form-control RangeLeft" name="@Model.CurrentPropertyName:@Model.RangeNames[i] левая" data-param-range-name="@uniqueId" data-param-range-id="@(uniqueId + Model.RangeSymbols[i])" required disabled>
                                 <span class="input-group-text">&le; @Model.RangeSymbols[i] &le;</span>
-                                <input type="text" class="form-control RangeRight" name="@Model.CurrentPropertyName:@Model.RangeNames[i] правая" data-param-range-name="@uniqueId" data-param-range-id="@(uniqueId + Model.RangeSymbols[i])" required disabled>
+                                <input type="number" step="any" class="form-control RangeRight" name="@Model.CurrentPropertyName:@Model.RangeNames[i] правая" data-param-range-name="@uniqueId" data-param-range-id="@(uniqueId + Model.RangeSymbols[i])" required disabled>
                             </div>
                         }
                     </div>

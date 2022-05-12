@@ -1,19 +1,29 @@
 ﻿using Coursework_CrystalSite_Final.Models;
 using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace Coursework_CrystalSite_Final.Controllers
 {
+    /// <summary>
+    /// Контроллер для обработки различных запросов по литературе.
+    /// </summary>
     [ApiController]
+    [Authorize]
     [Route("books")]
     public class BookController : Controller
     {
+        /// <summary>
+        /// Возвращает представление с литературой (книга/статья) по ее номеру.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("id/{id}")]
         public IActionResult GetBookById([FromRoute] int id)
         {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
             BookModel book = db.QueryFirst<BookModel>(
                 @"SELECT [Номер ссылки] as BookNumber
 	                , [Ф.И.О. авторов] as Authors
@@ -26,16 +36,25 @@ namespace Coursework_CrystalSite_Final.Controllers
             return View("OneBook", book);
         }
 
+        /// <summary>
+        /// Возвращает основное представление для поиска по книгам.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("search-setup")]
+        [AllowAnonymous]
         public IActionResult SearchView()
         {
             return View("SearchView");
         }
 
+        /// <summary>
+        /// Обрабатывает запрос на поиск по книгам.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("search-result")]
         public IActionResult SearchResult()
         {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
             string query = @"SELECT [Номер ссылки] as BookNumber
 	                            , [Ф.И.О. авторов] as Authors
 	                            , [Выходные данные] as BookNameAndPages

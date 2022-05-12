@@ -1,16 +1,23 @@
 ﻿using Coursework_CrystalSite_Final.Models;
 using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text.RegularExpressions;
 
 namespace Coursework_CrystalSite_Final.Controllers
 {
+    /// <summary>
+    /// Контроллер для обработки запросов по свойствам соединений.
+    /// </summary>
     [ApiController]
+    [Authorize]
     [Route("data-by-chemical")]
     public class DataByChemicalController : Controller
     {
+        /// <summary>
+        /// Отображение сокращенных имен сингоний, используемых в БД, в полные названия.
+        /// </summary>
         private Dictionary<string, string> syngonyNamesMapper = new()
         {
             { "к", "кубическая" },
@@ -23,6 +30,11 @@ namespace Coursework_CrystalSite_Final.Controllers
             { "рэ", "ромбоэдрическая" }
         };
 
+        /// <summary>
+        /// Возвращает представление со свойствами, доступными для текущего соединения.
+        /// </summary>
+        /// <param name="chemicalUrlName"></param>
+        /// <returns></returns>
         [HttpGet("ch/{chemicalUrlName}/")]
         public IActionResult GetChemicalProperties([FromRoute] string chemicalUrlName)
         {
@@ -31,7 +43,7 @@ namespace Coursework_CrystalSite_Final.Controllers
                 return NotFound("No chemical with such name");
             }
             int chemicalId = ChemicalModel.UrlNameToId[chemicalUrlName];
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
             IEnumerable<PropertyModel> properties = db.Query<PropertyModel>(@"
                     SELECT dbo.Properties.NOMPROP AS Id
 	                    ,NAZVPROP AS NameRus
@@ -51,10 +63,17 @@ namespace Coursework_CrystalSite_Final.Controllers
             return View("Properties", (chemicalUrlName, properties));
         }
 
+        /// <summary>
+        /// Возвращает результат запроса в БД по номеру свойства и номеру соединения.
+        /// Запрос делается именно в таблицах БД (с английскими названиями).
+        /// </summary>
+        /// <param name="chemicalId"></param>
+        /// <param name="propertyId"></param>
+        /// <returns></returns>
         [NonAction]
         public (string, IEnumerable<dynamic>) GetPropertyValuesFromInnerTables(int chemicalId, int propertyId)
         {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
             string nameOfPropertyEn = db.QuerySingleOrDefault<dynamic>(
                 "SELECT TableName AS TableNameEn FROM dbo.Properties WHERE NOMPROP = @propertyId"
                 , new { propertyId }).TableNameEn;
@@ -63,6 +82,11 @@ namespace Coursework_CrystalSite_Final.Controllers
                 , new { chemicalId }));
         }
 
+        /// <summary>
+        /// Исправляет имя свойства на название соответствующего ему представления в БД.
+        /// </summary>
+        /// <param name="nameOfPropertyRus"></param>
+        /// <returns></returns>
         [NonAction]
         public string FixNameOfPropertyToView(string nameOfPropertyRus)
         {
@@ -76,18 +100,30 @@ namespace Coursework_CrystalSite_Final.Controllers
             }
         }
 
+        /// <summary>
+        /// Возвращает результат запроса в БД по ррусскому названию свойства и номеру соединения.
+        /// Запрос делается в представлениях БД (с русскими названиями).
+        /// </summary>
+        /// <param name="chemicalId"></param>
+        /// <param name="propertyNameRus"></param>
+        /// <returns></returns>
         public IEnumerable<dynamic> GetPropertyValuesFromViews(int chemicalId, string propertyNameRus)
         {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
             return db.Query<dynamic>(
                 $"SELECT * FROM dbo.[{propertyNameRus}] WHERE [Номер соединения] = @chemicalId"
                 , new { chemicalId });
         }
 
+        /// <summary>
+        /// Возвращает русское название свойства по его номеру.
+        /// </summary>
+        /// <param name="propertyId"></param>
+        /// <returns></returns>
         [NonAction]
         public string GetPropertyViewNameRus(int propertyId)
         {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
             string nameOfPropertyRus = db.QuerySingleOrDefault<dynamic>(
                 "SELECT NAZVPROP as ViewNameRus FROM dbo.Properties WHERE NOMPROP = @propertyId"
                 , new { propertyId }).ViewNameRus;
@@ -95,10 +131,15 @@ namespace Coursework_CrystalSite_Final.Controllers
             return nameOfPropertyRus;
         }
 
+        /// <summary>
+        /// Обработка нестандартного свойства ("Аналитический обзор").
+        /// </summary>
+        /// <param name="chemicalId"></param>
+        /// <returns></returns>
         [NonAction]
         public (string ChemicalName, string AnalyticalReview) GetAnalyticalReview(int chemicalId)
         {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
             string analyticalReview = db.QueryFirstOrDefault<dynamic>(
             $"SELECT [Аналитический обзор] as AnalyticalReview FROM dbo.[Аналитический обзор] WHERE [Номер соединения] = @chemicalId"
             , new { chemicalId }).AnalyticalReview;
@@ -107,15 +148,27 @@ namespace Coursework_CrystalSite_Final.Controllers
             return (ChemicalModel.IdToHtmlName[chemicalId], analyticalReview);
         }
 
+        /// <summary>
+        /// Возвращает формулу соединения по его номеру.
+        /// </summary>
+        /// <param name="chemicalId"></param>
+        /// <returns></returns>
         [HttpGet("get-chemical-formula")]
         public string GetChemicalFormula([FromQuery(Name = "chemical_id")] int chemicalId)
         {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
             return db.QueryFirstOrDefault<dynamic>(
             @"SELECT HeadClue as Id, System as HtmlName FROM dbo._HeadTablConv WHERE HeadClue = @chemicalId"
             , new { chemicalId }).HtmlName;
         }
 
+        /// <summary>
+        /// Превращает результат запроса в БД в модель для представления (View).
+        /// </summary>
+        /// <param name="chemicalHtmlName"></param>
+        /// <param name="propertyNameRus"></param>
+        /// <param name="queryResult"></param>
+        /// <returns></returns>
         [NonAction]
         public PropertyTableModel MakeTableModel(string chemicalHtmlName, string propertyNameRus, IEnumerable<dynamic> queryResult)
         {
@@ -167,6 +220,12 @@ namespace Coursework_CrystalSite_Final.Controllers
             return tableModel;
         }
 
+        /// <summary>
+        /// Вспомогательный метод для нестандартного свойства "Нелинейные оптические свойства".
+        /// </summary>
+        /// <param name="chemicalId"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
         [NonAction]
         public dynamic TempForNonLinear(int chemicalId, string propertyName)
         {
@@ -174,6 +233,11 @@ namespace Coursework_CrystalSite_Final.Controllers
             return MakeTableModel(ChemicalModel.IdToHtmlName[chemicalId], propertyName, queryResult);
         }
 
+        /// <summary>
+        /// Обработка нестандартного свойства ("Нелинейные оптические свойства").
+        /// </summary>
+        /// <param name="chemicalId"></param>
+        /// <returns></returns>
         [NonAction]
         public (string ChemicalName, PropertyTableModel NonLinearOpticalCoefficients, 
             PropertyTableModel ComponentsOfTheMillerTensor, List<ImageModel> Images)
@@ -185,10 +249,15 @@ namespace Coursework_CrystalSite_Final.Controllers
                 componentsOfTheMillerTensor, GetImages(chemicalId, 29));
         }
 
+        /// <summary>
+        /// Обработка нестандартного свойства ("Литература").
+        /// </summary>
+        /// <param name="chemicalId"></param>
+        /// <returns></returns>
         [NonAction]
         public (string ChemicalName, IEnumerable<BookModel> Books) GetLiterature(int chemicalId)
         {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
             return (ChemicalModel.IdToHtmlName[chemicalId], db.Query<BookModel>(
                 @"SELECT litr.[Номер ссылки] as BookNumber
 	                , [Ф.И.О. авторов] as Authors
@@ -201,6 +270,14 @@ namespace Coursework_CrystalSite_Final.Controllers
                 , new { chemicalId }));
         }
 
+        /// <summary>
+        /// Основной управляющий метод для запроса данных о свойстве вещества.
+        /// Возвращает представление с результатами запроса в БД, представленными в читабельном виде.
+        /// </summary>
+        /// <param name="chemicalUrlName"></param>
+        /// <param name="propertyUrlName"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         [HttpGet("ch/{chemicalUrlName}/{propertyUrlName}/")]
         public IActionResult GetPropertyValues([FromRoute] string chemicalUrlName, [FromRoute] string propertyUrlName)
         {
@@ -248,10 +325,16 @@ namespace Coursework_CrystalSite_Final.Controllers
                 (MakeTableModel(ChemicalModel.IdToHtmlName[chemicalId], propertyNameRus, queryResult), GetImages(chemicalId, propertyId)));
         }
 
+        /// <summary>
+        /// Возвращает список графиков (моделей графиков) по номеру соединения и номеру свойства.
+        /// </summary>
+        /// <param name="chemicalId"></param>
+        /// <param name="propertyId"></param>
+        /// <returns></returns>
         [NonAction]
         public List<ImageModel> GetImages(int chemicalId, int propertyId)
         {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
             return db.Query<ImageModel>(
             @"SELECT [Название файла графика] as ImagePath, [Подпись к рисунку] as Name FROM dbo.[Ссылки на графики] 
                 WHERE [Номер соединения] = @chemicalId AND [Номер свойства] = @propertyId"

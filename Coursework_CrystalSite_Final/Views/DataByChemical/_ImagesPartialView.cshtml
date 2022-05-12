@@ -1,20 +1,13 @@
 ﻿@model List<ImageModel>
 
-@if (Model.Count == 0)
-{
-    <h6 class="text-muted">Нет графиков</h6>
-}
-else
-{
-    <div class="row">
-        @foreach (ImageModel image in Model)
-        {
-            <div class="col-lg-6 col-xl-4 col-md-12">
-                <div class="p-3">
-                    <img src="https://crystal.imet-db.ru/ru/CrystalPics/@(image.ImagePath).gif" class="img-fluid" alt="" />
-                    <p class="small-image-label text-muted">@Html.Raw(image.Name)</p>
-                </div>
+<div class="row">
+    @foreach (ImageModel image in Model)
+    {
+        <div class="col-lg-6 col-xl-4 col-md-12">
+            <div class="p-3">
+                <img src="https://crystal.imet-db.ru/ru/CrystalPics/@(image.ImagePath).gif" class="img-fluid" alt="" />
+                <p class="small-image-label text-muted">@Html.Raw(image.Name)</p>
             </div>
-        }
-    </div>
-}
+        </div>
+    }
+</div>

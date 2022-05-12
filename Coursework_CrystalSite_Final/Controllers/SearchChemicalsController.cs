@@ -6,10 +6,17 @@ using System.Data.SqlClient;
 
 namespace Coursework_CrystalSite_Final.Controllers
 {
+    /// <summary>
+    /// Контроллер, отвечающий за поиск соединений через таблицу Менделеева.
+    /// </summary>
     [ApiController]
     [Route("search-chemicals")]
     public class SearchChemicalsController : Controller
     {
+        /// <summary>
+        /// Возвращает основное представление для поиска соединений по таблице Менделеева.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("index")]
         public IActionResult Index()
         {
@@ -18,15 +25,13 @@ namespace Coursework_CrystalSite_Final.Controllers
 
         /// <summary>
         /// Метод, возвращающий соединения по находящимся в них элементам.
-        /// Для фильтрации он использует функцию Transact Sql LIKE, 
-        /// которая обладает весьма ограниченным функционалом.
         /// </summary>
         /// <param name="elements"></param>
         /// <returns></returns>
         [HttpGet("by-elements")]
         public IActionResult GetChemicalsByElements([FromQuery] string elements)
         {
-            using IDbConnection db = new SqlConnection(DatabaseConnection.connectionString);
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
             string[] chemStrings = elements.Split('-', StringSplitOptions.RemoveEmptyEntries);
             List<ChemicalModel> chemicals = new();
             if (chemStrings.Length != 0)
@@ -37,6 +42,21 @@ namespace Coursework_CrystalSite_Final.Controllers
             }
             chemicals.Sort(ChemicalModel.CompareChemicals);
             return PartialView("_FoundChemicalsPartialView", chemicals);
+        }
+
+        /// <summary>
+        /// Возвращает представление со всеми доступными соединениями в БД.
+        /// (Для хорошей индексации сайта)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("all")]
+        public IActionResult AllChemicals()
+        {
+            using IDbConnection db = new SqlConnection(DatabaseConnection.ConnectionString);
+            List<ChemicalModel> chemicals = db.Query<ChemicalModel>(
+                @"SELECT HeadClue as Id, System as HtmlName FROM dbo._HeadTablConv").ToList();
+            chemicals.Sort(ChemicalModel.CompareChemicals);
+            return View("AllChemicals", chemicals);
         }
     }
 }

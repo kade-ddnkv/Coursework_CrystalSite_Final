@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace Coursework_CrystalSite_Final.Controllers
 {
+    /// <summary>
+    /// Контроллер, отвечающий за главную (вводную) страницу.
+    /// </summary>
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -13,6 +16,10 @@ namespace Coursework_CrystalSite_Final.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Возвращает представление главной (вводной) страницы сайта.
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();

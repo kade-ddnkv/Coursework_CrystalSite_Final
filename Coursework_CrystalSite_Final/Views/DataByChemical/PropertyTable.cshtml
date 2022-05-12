@@ -11,9 +11,12 @@
 </div>
 
 <div class="PropertyTableContainer">
-    <a class="text-dark" style="text-decoration:none;" href="#charts">
-        <h6 class="mb-2 text-muted">↓ к графикам</h6>
-    </a>
+    @if (Model.Images.Count != 0)
+    {
+        <a class="text-dark" style="text-decoration:none;" href="#charts">
+            <h6 class="mb-2 text-muted">↓ к графикам</h6>
+        </a>
+    }
     @if (Model.TableModel.TableWithSyngonyModel != null)
     {
         @await Html.PartialAsync("_TableWithSyngonyPartialView", Model.TableModel.TableWithSyngonyModel)
@@ -26,8 +29,11 @@
     {
         <p>Нет информации</p>
     }
-    <div class="my-3">
-        <h6 id="charts">Графики:</h6>
-        @await Html.PartialAsync("_ImagesPartialView", Model.Images)
-    </div>
+    @if (Model.Images.Count != 0)
+    {
+        <div class="my-3">
+            <h6 id="charts">Графики:</h6>
+            @await Html.PartialAsync("_ImagesPartialView", Model.Images)
+        </div>
+    }
 </div>

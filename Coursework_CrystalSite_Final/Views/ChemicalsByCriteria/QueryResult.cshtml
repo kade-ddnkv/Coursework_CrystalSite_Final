@@ -1,12 +1,6 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-@section PageCss
+﻿@section PageCss
 {
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css" />
 <link rel="stylesheet" href="~/css/complex_query_result.css" asp-append-version="true" />
 }
 
@@ -18,24 +12,31 @@
 
 @model QueryResultModel
 
-<div class="pb-2">
-    <h2>Краткий список веществ:</h2>
-    <p class="text-muted">Нажмите на элемент, чтобы отфильтровать таблицу</p>
-</div>
-<div class="row">
-    <div class="col-md-10 col-lg-8">
-        <ol class="BriefChemicalsList pb-3">
-            @foreach (ChemicalModel chemical in Model.briefChemicalsList)
-            {
-                @*<div class="col BriefChemical"><span>@Html.Raw(chemical)</span></div>*@
-                <li class="BriefChemical"><span>@Html.Raw(chemical.HtmlName)</span></li>
-            }
-        </ol>
+@if (Model.BriefChemicalList.Count == 0)
+{
+    <h3>По данному запросу не нашлось соединений</h3>
+}
+else
+{
+    <div class="pb-2">
+        <h2>Краткий список соединений:</h2>
+        <p class="text-muted">Нажмите на элемент, чтобы отфильтровать таблицу</p>
     </div>
-</div>
-<div class="pb-2">
-    <h2>Полная таблица совпадений в базе данных:</h2>
-</div>
-<div id="tableQueryResult">
-    @await Html.PartialAsync("_CriteriaQueryTablePartialView", Model.dynamicTable)
-</div>
+    <div class="row">
+        <div class="col-md-10 col-lg-8">
+            <ol class="BriefChemicalsList pb-3">
+                @foreach (ChemicalModel chemical in Model.BriefChemicalList)
+                {
+                    <li class="BriefChemical"><span>@Html.Raw(chemical.HtmlName)</span></li>
+                }
+            </ol>
+        </div>
+    </div>
+    <div class="pb-2">
+        <h2>Полная таблица совпадений в базе данных:</h2>
+    </div>
+    <div id="tableQueryResult">
+        @await Html.PartialAsync("_CriteriaQueryTablePartialView", Model.DynamicTable)
+    </div>
+
+}
