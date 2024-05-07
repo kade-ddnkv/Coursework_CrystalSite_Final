@@ -1,9 +1,9 @@
 # Coursework_CrystalSite_Final
-Ссылка на текущую развернутую версию веб-приложения:  
+Link to the current deployed version of the web application:  
 https://crystal-coursework.azurewebsites.net
 
-Аккаунт для тестирования:  
+Account for testing:  
 kirill.d.dudnikov@gmail.com  
 2yR84ln11ans  
 
-UPDATE. База данных была выключена в связи с моим нежеланием тратить средства из Azure на её поддержание.
+UPDATE. The database was shut down due to my unwillingness to spend funds from Azure to maintain it.
